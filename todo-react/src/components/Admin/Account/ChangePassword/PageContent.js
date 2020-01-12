@@ -98,7 +98,7 @@ class PageContent extends Component {
                         password: TodoStore.getPassword
 
                     }
-                    var port = TodoStore.getPort+'account/update/';
+                    var port = TodoStore.getPort+'accountrouter/update/';
                     axios.post(port + id, account)
                         .then(res => {
                             if (res.data === '202') {

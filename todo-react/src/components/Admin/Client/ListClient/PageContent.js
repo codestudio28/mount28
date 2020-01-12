@@ -31,8 +31,9 @@ class PageContent extends Component {
         }
     }
     componentDidMount() {
-        
-            fetch('http://localhost:8080/client/')
+        const TodoStore = this.props.TodoStore;
+        var port = TodoStore.getPort;
+            fetch(port+'clientrouter/')
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -75,7 +76,9 @@ class PageContent extends Component {
         ));
        
         const getClient = () =>{
-            fetch('http://localhost:8080/client/')
+          
+            var port = TodoStore.getPort;
+            fetch(port+'clientrouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -103,7 +106,10 @@ class PageContent extends Component {
                     status : "ACTIVE"
 
                 }
-                axios.post('http://localhost:8080/client/add', client)
+               
+                var port = TodoStore.getPort;
+                console.log(port);
+                axios.post(port+'clientrouter/add', client)
                     .then(res => {
                         console.log(res.data);
                         if (res.data === '202') {
@@ -151,7 +157,9 @@ class PageContent extends Component {
                     province : TodoStore.getProvince
 
                 }
-                axios.post('http://localhost:8080/client/update/'+id, client)
+               
+                var port = TodoStore.getPort;
+                axios.post(port+'clientrouter/update/'+id, client)
                     .then(res => {
                         if (res.data === '202') {
                             openNotification("Exist");
@@ -170,7 +178,9 @@ class PageContent extends Component {
                 const client = {
                          status:'REMOVED'
                 }
-                axios.post('http://localhost:8080/client/status/'+id, client)
+               
+                var port = TodoStore.getPort;
+                axios.post(port+'clientrouter/status/'+id, client)
                         .then(res => {
                             console.log(res.data);
                             if (res.data === '101') {

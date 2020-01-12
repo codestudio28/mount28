@@ -31,8 +31,9 @@ class PageContent extends Component {
         }
     }
     componentDidMount() {
-        
-        fetch('http://localhost:8080/account/active')
+        const TodoStore = this.props.TodoStore;
+        var port = TodoStore.getPort+"accountrouter/active";
+        fetch(port)
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -69,7 +70,8 @@ class PageContent extends Component {
             ));
 
         const getAdministrator = () => {
-            fetch('http://localhost:8080/account/active')
+            var port = TodoStore.getPort+"accountrouter/active";
+            fetch(port)
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -99,7 +101,8 @@ class PageContent extends Component {
                     status: "ACTIVE"
 
                 }
-                axios.post('http://localhost:8080/account/add', account)
+                var port = TodoStore.getPort;
+                axios.post(port+'accountrouter/add', account)
                     .then(res => {
                         console.log(res.data);
                         if (res.data === '202') {
@@ -143,7 +146,7 @@ class PageContent extends Component {
                     middlename: TodoStore.getMiddlename
 
                 }
-                var port = TodoStore.getPort+'account/update/';
+                var port = TodoStore.getPort+'accountrouter/update/';
                 axios.post(port + id, account)
                     .then(res => {
                         if (res.data === '202') {
@@ -166,7 +169,7 @@ class PageContent extends Component {
             const client = {
                 status: 'REMOVED'
             }
-            var port = TodoStore.getPort+'account/remove/';
+            var port = TodoStore.getPort+'accountrouter/remove/';
             axios.post(port + id, client)
                 .then(res => {
                     console.log(res.data);

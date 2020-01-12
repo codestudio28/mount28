@@ -31,8 +31,9 @@ class PageContent extends Component {
         }
     }
     componentDidMount() {
-        
-            fetch('http://localhost:8080/client/')
+        const TodoStore = this.props.TodoStore;
+        var port = TodoStore.getPort;
+            fetch(port+'clientrouter/')
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -75,7 +76,8 @@ class PageContent extends Component {
         ));
        
         const getClient = () =>{
-            fetch('http://localhost:8080/client/')
+            var port = TodoStore.getPort;
+            fetch(port+'clientrouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -90,7 +92,9 @@ class PageContent extends Component {
                 const client = {
                          status:'ACTIVE'
                 }
-                axios.post('http://localhost:8080/client/status/'+id, client)
+               
+                var port = TodoStore.getPort;
+                axios.post(port+'clientrouter/status/'+id, client)
                         .then(res => {
                             console.log(res.data);
                             if (res.data === '101') {

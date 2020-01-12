@@ -31,8 +31,9 @@ class PageContent extends Component {
         }
     }
     componentDidMount() {
-
-        fetch('http://localhost:8080/paymentscheme/')
+        const TodoStore = this.props.TodoStore;
+        var port = TodoStore.getPort;
+        fetch(port+'paymentschemerouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -68,7 +69,9 @@ class PageContent extends Component {
         ));
 
         const getPaymentScheme = () => {
-            fetch('http://localhost:8080/paymentscheme/')
+          
+            var port = TodoStore.getPort;
+            fetch(port+'paymentschemerouter/')
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -90,7 +93,9 @@ class PageContent extends Component {
                     status: "ACTIVE"
 
                 }
-                axios.post('http://localhost:8080/paymentscheme/add', payment)
+              
+                var port = TodoStore.getPort;
+                axios.post(port+'paymentschemerouter/add', payment)
                     .then(res => {
                         console.log(res.data);
                         if (res.data === '202') {
@@ -132,7 +137,9 @@ class PageContent extends Component {
                     numyear: TodoStore.getYears
 
                 }
-                axios.post('http://localhost:8080/paymentscheme/update/' + id, payment)
+              
+                var port = TodoStore.getPort;
+                axios.post(port+'paymentschemerouter/update/' + id, payment)
                     .then(res => {
                         if (res.data === '202') {
                             TodoStore.setAdding(false);
@@ -154,7 +161,9 @@ class PageContent extends Component {
             const proptype = {
                 status: 'REMOVED'
             }
-            axios.post('http://localhost:8080/paymentscheme/status/' + id, proptype)
+          
+            var port = TodoStore.getPort;
+            axios.post(port+'paymentschemerouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
@@ -170,7 +179,9 @@ class PageContent extends Component {
             const proptype = {
                 status: 'ACTIVE'
             }
-            axios.post('http://localhost:8080/paymentscheme/status/' + id, proptype)
+           
+            var port = TodoStore.getPort;
+            axios.post(port+'paymentschemerouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {

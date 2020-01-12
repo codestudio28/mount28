@@ -31,8 +31,9 @@ class PageContent extends Component {
         }
     }
     componentDidMount() {
-
-        fetch('https://mmpdc.herokuapp.com/propertyrouter/')
+        const TodoStore = this.props.TodoStore;
+        var port = TodoStore.getPort;
+        fetch(port+'propertyrouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({

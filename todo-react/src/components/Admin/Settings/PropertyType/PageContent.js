@@ -31,8 +31,9 @@ class PageContent extends Component {
         }
     }
     componentDidMount() {
-
-        fetch('http://localhost:8080/proptype/')
+        const TodoStore = this.props.TodoStore;
+        var port = TodoStore.getPort;
+        fetch(port+'proptyperouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -69,7 +70,9 @@ class PageContent extends Component {
         ));
 
         const getPropertyType = () => {
-            fetch('http://localhost:8080/proptype/')
+            
+            var port = TodoStore.getPort;
+            fetch(port+'proptyperouter/')
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -92,7 +95,8 @@ class PageContent extends Component {
                     status: "ACTIVE"
 
                 }
-                axios.post('http://localhost:8080/proptype/add', propertytype)
+                var port = TodoStore.getPort;
+                axios.post(port+'proptyperouter/add', propertytype)
                     .then(res => {
                         console.log(res.data);
                         if (res.data === '202') {
@@ -136,7 +140,9 @@ class PageContent extends Component {
                     misc: TodoStore.getMisc
 
                 }
-                axios.post('http://localhost:8080/proptype/update/' + id, propertytype)
+               
+                var port = TodoStore.getPort;
+                axios.post(port+'proptyperouter/update/' + id, propertytype)
                     .then(res => {
                         if (res.data === '202') {
                             TodoStore.setAdding(false);
@@ -158,7 +164,9 @@ class PageContent extends Component {
             const proptype = {
                 status: 'REMOVED'
             }
-            axios.post('http://localhost:8080/proptype/status/' + id, proptype)
+           
+            var port = TodoStore.getPort;
+            axios.post(port+'proptyperouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
@@ -174,7 +182,9 @@ class PageContent extends Component {
             const proptype = {
                 status: 'ACTIVE'
             }
-            axios.post('http://localhost:8080/proptype/status/' + id, proptype)
+            
+            var port = TodoStore.getPort;
+            axios.post(port+'proptyperouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {

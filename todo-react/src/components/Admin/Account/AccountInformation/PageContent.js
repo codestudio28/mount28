@@ -100,7 +100,7 @@ class PageContent extends Component {
 
                 }
                
-                var port = TodoStore.getPort+'account/update/';
+                var port = TodoStore.getPort+'accountrouter/update/';
                 axios.post(port+id, account)
                     .then(res => {
                         if (res.data === '202') {
@@ -135,7 +135,7 @@ class PageContent extends Component {
                         image: TodoStore.getImage
                     }
                     
-                    var port = TodoStore.getPort+'account/update/profile/';
+                    var port = TodoStore.getPort+'accountrouter/update/profile/';
                     axios.post(port + id, account)
                         .then(res => {
                             if (res.data === '202') {
@@ -162,7 +162,7 @@ class PageContent extends Component {
             formData.append('file', file);
 
             try {
-                var port = TodoStore.getPort+'account/profile';
+                var port = TodoStore.getPort+'profile';
                 const res = await axios.post(port, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
