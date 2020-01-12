@@ -162,8 +162,5 @@
       ],
       ["@babel/plugin-proposal-class-properties", { "loose" : true }]
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.7.4"
   }
 }
