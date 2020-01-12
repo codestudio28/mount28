@@ -32,7 +32,7 @@ class PageContent extends Component {
     }
     componentDidMount() {
 
-        fetch('http://localhost:8080/property/')
+        fetch('https://mmpdc.herokuapp.com/propertyrouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -70,7 +70,8 @@ class PageContent extends Component {
             ));
 
         const getProperty = () => {
-            fetch('http://localhost:8080/property/')
+            var port = TodoStore.getPort+"propertyrouter/"
+            fetch(port)
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -95,7 +96,8 @@ class PageContent extends Component {
                     status: "NEW"
 
                 }
-                axios.post('http://localhost:8080/property/add', property)
+                var port = TodoStore.getPort+"propertyrouter/add"
+                axios.post(port, property)
                     .then(res => {
                         console.log(res.data);
                         if (res.data === '202') {
@@ -142,7 +144,8 @@ class PageContent extends Component {
                     price: TodoStore.getPrice
 
                 }
-                axios.post('http://localhost:8080/property/update/' + id, property)
+                var port = TodoStore.getPort+"propertyrouter/update/"
+                axios.post(port + id, property)
                     .then(res => {
                         if (res.data === '202') {
                             TodoStore.setAdding(false);
@@ -164,7 +167,8 @@ class PageContent extends Component {
             const client = {
                 status: 'REMOVED'
             }
-            axios.post('http://localhost:8080/property/status/' + id, client)
+            var port = TodoStore.getPort+"propertyrouter/status/"
+            axios.post(port + id, client)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {

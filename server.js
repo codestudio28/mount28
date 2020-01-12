@@ -40,7 +40,7 @@ const proptypeRouter = require('./routes/proptype');
 const paymentschemeRouter = require('./routes/paymentscheme');
 
 app.use('/account',userRouter);
-app.use('/property',propertyRouter);
+app.use('/propertyrouter',propertyRouter);
 app.use('/client',clientRouter);
 app.use('/proptype',proptypeRouter);
 app.use('/paymentscheme',paymentschemeRouter);
