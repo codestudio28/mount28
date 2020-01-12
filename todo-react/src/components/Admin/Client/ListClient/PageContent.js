@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Icon,Spin, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
+import { Layout, Menu, Badge,Icon,Spin, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
 import { Container, Row, Col } from 'react-bootstrap';
 import './content.css';
 import { Input } from 'antd';
@@ -94,7 +94,7 @@ class PageContent extends Component {
                 || (TodoStore.getProvince.length === 0)) {
                 openNotification("Blank");
             } else {
-
+                TodoStore.setAdding(true);
                 const client = {
                     lastname : TodoStore.getLastname,
                     firstname : TodoStore.getFirstname,
@@ -114,11 +114,14 @@ class PageContent extends Component {
                         console.log(res.data);
                         if (res.data === '202') {
                             openNotification("Exist");
+                            TodoStore.setAdding(false);
                         } else if (res.data === '101') {
+                            TodoStore.setAdding(false);
                             openNotification("Success");
                             getClient();
                             TodoStore.setHandleCancel();
                         }else{
+                            TodoStore.setAdding(false);
                             openNotification("Server");
                         }
                     });
@@ -146,6 +149,7 @@ class PageContent extends Component {
                 || (TodoStore.getProvince.length === 0)) {
                 openNotification("Blank");
             } else {
+                TodoStore.setAdding(true);
                 let id = TodoStore.getUpdateId;
                 const client = {
                     lastname : TodoStore.getLastname,
@@ -162,12 +166,15 @@ class PageContent extends Component {
                 axios.post(port+'clientrouter/update/'+id, client)
                     .then(res => {
                         if (res.data === '202') {
+                            TodoStore.setAdding(false);
                             openNotification("Exist");
                         } else if (res.data === '101') {
+                            TodoStore.setAdding(false);
                             openNotification("Update");
                             getClient();
                             TodoStore.setHandleCancel();
                         }else{
+                            TodoStore.setAdding(false);
                             openNotification("Server");
                         }
                     });
@@ -178,15 +185,17 @@ class PageContent extends Component {
                 const client = {
                          status:'REMOVED'
                 }
-               
+               TodoStore.setLoading(true);
                 var port = TodoStore.getPort;
                 axios.post(port+'clientrouter/status/'+id, client)
                         .then(res => {
                             console.log(res.data);
                             if (res.data === '101') {
                                 getClient();
+                                TodoStore.setLoading(false);
                                 openNotification("Removed");
                             }else{
+                                TodoStore.setLoading(false);
                                 openNotification("Server");
                             }
                 });
@@ -290,24 +299,39 @@ class PageContent extends Component {
                             <td>{data.contactnumber}</td>
                             <td>{data.address} {data.city} {data.province}</td>
                             <td>
-                                <ButtonGroup>
-                                <Tooltip placement="topLeft" title="Click to update client information">
-                                    <Button style={{ backgroundColor: '#00a2ae' }}
-                                        onClick={(event) => setUpdate(data.key)}
-                                    ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                </Tooltip>
-                                <Tooltip placement="topLeft" title="Click to remove this client">
-                                    <Popconfirm
-                                        placement="topRight"
-                                        title="Do you want to remove this client?"
-                                        onConfirm={removeClient}
-                                        okText="Yes"
-                                        cancelText="No"
-                                    >  
-                                    <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                    </Popconfirm>
-                                </Tooltip>
-                                </ButtonGroup>
+                                {!TodoStore.getLoading &&
+                                    <ButtonGroup>
+                                    <Tooltip placement="topLeft" title="Click to update client information">
+                                        <Button style={{ backgroundColor: '#00a2ae' }}
+                                            onClick={(event) => setUpdate(data.key)}
+                                        ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                    </Tooltip>
+                                    <Tooltip placement="topLeft" title="Click to remove this client">
+                                        <Popconfirm
+                                            placement="topRight"
+                                            title="Do you want to remove this client?"
+                                            onConfirm={removeClient}
+                                            okText="Yes"
+                                            cancelText="No"
+                                        >  
+                                        <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                        </Popconfirm>
+                                    </Tooltip>
+                                    </ButtonGroup>
+                                }
+                                {TodoStore.getLoading &&
+                                    <div style={{fontSize:'1em',
+                                                backgroundColor:'#a0d911',
+                                                height:'2em',
+                                                borderRadius:'0.5em',
+                                                width:'12em',
+                                                textAlign:'center',
+                                                padding:'0.25em',
+                                                color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+                     
+                                }
                             </td>
                         </tr>
                  )

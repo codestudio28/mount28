@@ -6,8 +6,9 @@ import axios from "axios";
 
 class TodoStore {
 @observable profilepath='/profile/';
-@observable port='https://mmpdc.herokuapp.com/';
-// @observable port='http://localhost:8080/';
+// @observable port='https://mmpdc.herokuapp.com/';
+@observable port='http://localhost:8080/';
+@observable loading=false;
 @observable accountimage='';
 @observable updateimage=false;
 @observable profileimage='Choose File';
@@ -46,6 +47,9 @@ class TodoStore {
 @observable schemepercentage ='';
 @observable schemeyears =5;
 
+@action setLoading = (value) => {
+  this.loading=value;
+}
 @action setAdding = (value) => {
   this.isadding=value;
 }
@@ -234,6 +238,9 @@ class TodoStore {
 }
 // Computed
 
+@computed get getLoading(){
+  return this.loading;
+}
 @computed get getAdding(){
   return this.isadding;
 }

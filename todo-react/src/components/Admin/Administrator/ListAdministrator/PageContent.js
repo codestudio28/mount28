@@ -169,14 +169,17 @@ class PageContent extends Component {
             const client = {
                 status: 'REMOVED'
             }
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort+'accountrouter/remove/';
             axios.post(port + id, client)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        TodoStore.setLoading(false);
                         getAdministrator();
                         openNotification("Removed");
                     } else {
+                        TodoStore.setLoading(false);
                         openNotification("Server");
                     }
                 });
@@ -280,6 +283,7 @@ class PageContent extends Component {
                                 <td>{data.email}</td>
                                 <td>{data.firstname} {data.middlename} {data.lastname}</td>
                                 <td>
+                                {!TodoStore.getLoading &&
                                     <ButtonGroup>
                                         <Tooltip placement="topLeft" title="Click to update administrator information">
                                             <Button style={{ backgroundColor: '#00a2ae' }}
@@ -298,6 +302,19 @@ class PageContent extends Component {
                                             </Popconfirm>
                                         </Tooltip>
                                     </ButtonGroup>
+                                    }   
+                                    {TodoStore.getLoading &&
+                                        <div style={{fontSize:'1em',
+                                        backgroundColor:'#a0d911',
+                                        height:'2em',
+                                        borderRadius:'0.5em',
+                                        width:'12em',
+                                        textAlign:'center',
+                                        padding:'0.25em',
+                                        color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+                                    }
                                 </td>
                             </tr>
                         )

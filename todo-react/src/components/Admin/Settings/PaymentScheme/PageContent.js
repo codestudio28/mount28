@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Spin, Icon, InputNumber, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
 import { Container, Row, Col } from 'react-bootstrap';
+import { reactLocalStorage } from 'reactjs-localstorage';
 import './content.css';
 import { Input } from 'antd';
 import { inject, observer } from 'mobx-react';
@@ -161,15 +162,17 @@ class PageContent extends Component {
             const proptype = {
                 status: 'REMOVED'
             }
-          
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort;
             axios.post(port+'paymentschemerouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        TodoStore.setLoading(false);
                         getPaymentScheme();
                         openNotification("Removed");
                     } else {
+                        TodoStore.setLoading(false);
                         openNotification("Server");
                     }
                 });
@@ -179,15 +182,17 @@ class PageContent extends Component {
             const proptype = {
                 status: 'ACTIVE'
             }
-           
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort;
             axios.post(port+'paymentschemerouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        TodoStore.setLoading(false);
                         getPaymentScheme();
                         openNotification("Retrieve");
                     } else {
+                        TodoStore.setLoading(false);
                         openNotification("Server");
                     }
                 });
@@ -301,9 +306,8 @@ class PageContent extends Component {
                             <td>{data.numyear}</td>
                             <td>{data.status}</td>
                             <td>
-                                {
-                                    console.log(data.status)
-                                }
+                                
+                            {!TodoStore.getLoading &&
                                 <ButtonGroup>
                                     {data.status === "REMOVED" &&
                                         <Tooltip placement="topLeft" title="Click to retrieve this payment scheme">
@@ -338,8 +342,20 @@ class PageContent extends Component {
                                             </Tooltip>
                                         </React.Fragment>
                                     }
-
                                 </ButtonGroup>
+                                }
+                                {TodoStore.getLoading &&
+                                        <div style={{fontSize:'1em',
+                                        backgroundColor:'#a0d911',
+                                        height:'2em',
+                                        borderRadius:'0.5em',
+                                        width:'12em',
+                                        textAlign:'center',
+                                        padding:'0.25em',
+                                        color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+                                    }
                             </td>
                         </tr>
                     )

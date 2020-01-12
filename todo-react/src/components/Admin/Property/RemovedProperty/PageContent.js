@@ -90,16 +90,20 @@ class PageContent extends Component {
             const client = {
                 status: 'NEW'
             }
-          
+           TodoStore.setLoading(true);
             var port = TodoStore.getPort;
             axios.post(port+'propertyrouter/status/' + id, client)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        
                         getProperty();
+                        TodoStore.setLoading(false);
                         openNotification("Retrieved");
                     } else {
+                        
                         openNotification("Server");
+                        TodoStore.setLoading(false);
                     }
                 });
         }
@@ -216,6 +220,7 @@ class PageContent extends Component {
                                 <td>Php. {data.price}</td>
                                 <td>{data.status}</td>
                                 <td>
+                                {!TodoStore.getLoading &&
                                     <ButtonGroup>
                                         <Tooltip placement="topLeft" title="Click to retrieve this property">
                                             <Popconfirm
@@ -229,6 +234,19 @@ class PageContent extends Component {
                                             </Popconfirm>
                                         </Tooltip>
                                     </ButtonGroup>
+                                    }
+                                    {TodoStore.getLoading &&
+                                        <div style={{fontSize:'1em',
+                                        backgroundColor:'#a0d911',
+                                        height:'2em',
+                                        borderRadius:'0.5em',
+                                        width:'12em',
+                                        textAlign:'center',
+                                        padding:'0.25em',
+                                        color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+                                    }
                                 </td>
                             </tr>
                         )

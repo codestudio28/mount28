@@ -164,15 +164,17 @@ class PageContent extends Component {
             const proptype = {
                 status: 'REMOVED'
             }
-           
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort;
             axios.post(port+'proptyperouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        TodoStore.setLoading(false);
                         getPropertyType();
                         openNotification("Removed");
                     } else {
+                        TodoStore.setLoading(false);
                         openNotification("Server");
                     }
                 });
@@ -182,15 +184,17 @@ class PageContent extends Component {
             const proptype = {
                 status: 'ACTIVE'
             }
-            
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort;
             axios.post(port+'proptyperouter/status/' + id, proptype)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        TodoStore.setLoading(false);
                         getPropertyType();
                         openNotification("Retrieve");
                     } else {
+                        TodoStore.setLoading(false);
                         openNotification("Server");
                     }
                 });
@@ -307,8 +311,10 @@ class PageContent extends Component {
                             <td>{data.misc}%</td>
                             <td>{data.status}</td>
                             <td>
+                            {!TodoStore.getLoading &&
                                 <ButtonGroup>
                                     {data.status === "REMOVED" &&
+
                                         <Tooltip placement="topLeft" title="Click to retrieve this property type">
                                             <Popconfirm
                                                 placement="topRight"
@@ -323,6 +329,7 @@ class PageContent extends Component {
                                     }
                                     {data.status !== "REMOVED" &&
                                         <React.Fragment>
+
                                             <Tooltip placement="topLeft" title="Click to update property type information">
                                                 <Button style={{ backgroundColor: '#00a2ae' }}
                                                     onClick={(event) => setUpdate(data.key)}
@@ -339,10 +346,23 @@ class PageContent extends Component {
                                                     <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
                                                 </Popconfirm>
                                             </Tooltip>
+                                            
                                         </React.Fragment>
                                     }
-
                                 </ButtonGroup>
+                                }
+                                {TodoStore.getLoading &&
+                                        <div style={{fontSize:'1em',
+                                        backgroundColor:'#a0d911',
+                                        height:'2em',
+                                        borderRadius:'0.5em',
+                                        width:'12em',
+                                        textAlign:'center',
+                                        padding:'0.25em',
+                                        color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+                                    }
                             </td>
                         </tr>
                     )

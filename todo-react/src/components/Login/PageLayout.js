@@ -11,8 +11,10 @@ class PageLayout extends Component {
     render() {
         const TodoStore = this.props.TodoStore;
         const login = () => {
+            TodoStore.setLoading(true);
             if((TodoStore.getUsername==='')||(TodoStore.getPassword==='')){
                 openNotification("Blank");
+                TodoStore.setLoading(false);
            }else{
             const users = {
                 email: TodoStore.getUsername,
@@ -26,7 +28,9 @@ class PageLayout extends Component {
                     console.log(res.data);
                     if (res.data === '303') {
                         openNotification("Wrong");
+                        TodoStore.setLoading(false);
                     } else {
+                        TodoStore.setLoading(false);
                         reactLocalStorage.set('userid',res.data[0]._id);
                         reactLocalStorage.set('useremail',res.data[0].email);
                         reactLocalStorage.set('userlastname',res.data[0].lastname);
@@ -153,9 +157,16 @@ class PageLayout extends Component {
                                                 </Col>
                                                 <Col  xs={12} md={12} style={{marginTop:'2em'}}>
                                                     <Tooltip placement="topLeft" title="Click to login">
-                                                        <Button 
-                                                        onClick={login}
-                                                        style={{color:'#ffffff',backgroundColor:'#092b00',width:'100%'}}>Login</Button>
+                                                        {!TodoStore.getLoading &&
+                                                             <Button 
+                                                             onClick={login}
+                                                             style={{color:'#ffffff',backgroundColor:'#092b00',width:'100%'}}>Login</Button>
+                                                        }
+                                                         {TodoStore.getLoading &&
+                                                             <Button 
+                                                             style={{color:'#ffffff',backgroundColor:'#092b00',width:'100%'}}>Please wait. Logging in...</Button>
+                                                        }
+                                                       
                                                     </Tooltip>
                                                 </Col>
                                             </Row>

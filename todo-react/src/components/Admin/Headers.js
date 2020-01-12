@@ -17,7 +17,10 @@ class Headers extends Component {
    
     render() {
         const TodoStore = this.props.TodoStore;
-       
+        const gotoLogout = () =>{
+            reactLocalStorage.clear();
+            window.open("/","_self");
+        }
         return (
             <React.Fragment>
                 <Header style={{ background: '#fff', padding: 0 }} >
@@ -64,7 +67,7 @@ class Headers extends Component {
 
                                     }>
                                     <Menu.Item key="1">My Account</Menu.Item>
-                                    <Menu.Item >Logout</Menu.Item>
+                                    <Menu.Item onClick={gotoLogout}>Logout</Menu.Item>
                                 </SubMenu>
 
 

@@ -87,14 +87,17 @@ class PageContent extends Component {
             const client = {
                 status: 'ACTIVE'
             }
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort;
             axios.post(port+'accountrouter/retrieve/' + id, client)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
+                        TodoStore.setLoading(false);
                         getAdministrator();
                         openNotification("Retrieved");
                     } else {
+                        TodoStore.setLoading(false);
                         openNotification("Server");
                     }
                 });
@@ -198,6 +201,7 @@ class PageContent extends Component {
                                 <td>{data.email}</td>
                                 <td>{data.firstname} {data.middlename} {data.lastname}</td>
                                 <td>
+                                {!TodoStore.getLoading &&
                                     <ButtonGroup>
                                         <Tooltip placement="topLeft" title="Click to retrieve this administrator">
                                             <Popconfirm
@@ -211,6 +215,19 @@ class PageContent extends Component {
                                             </Popconfirm>
                                         </Tooltip>
                                     </ButtonGroup>
+                                    }
+                                    {TodoStore.getLoading &&
+                                        <div style={{fontSize:'1em',
+                                        backgroundColor:'#a0d911',
+                                        height:'2em',
+                                        borderRadius:'0.5em',
+                                        width:'12em',
+                                        textAlign:'center',
+                                        padding:'0.25em',
+                                        color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+                                    }
                                 </td>
                             </tr>
                         )

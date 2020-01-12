@@ -88,6 +88,7 @@ class PageContent extends Component {
         }
        
         const retrieveClient = () =>{
+            TodoStore.setLoading(true);
             var id = TodoStore.getRemoveId;
                 const client = {
                          status:'ACTIVE'
@@ -98,9 +99,11 @@ class PageContent extends Component {
                         .then(res => {
                             console.log(res.data);
                             if (res.data === '101') {
+                                TodoStore.setLoading(false);
                                 getClient();
                                 openNotification("Retrieved");
                             }else{
+                                TodoStore.setLoading(false);
                                 openNotification("Server");
                             }
                 });
@@ -165,20 +168,35 @@ class PageContent extends Component {
                             <td>{data.contactnumber}</td>
                             <td>{data.address} {data.city} {data.province}</td>
                             <td>
-                                <ButtonGroup>
-                               
-                                <Tooltip placement="topLeft" title="Click to retrieve this client">
-                                    <Popconfirm
-                                        placement="topRight"
-                                        title="Do you want to retrieve this client?"
-                                        onConfirm={retrieveClient}
-                                        okText="Yes"
-                                        cancelText="No"
-                                    >  
-                                    <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                    </Popconfirm>
-                                </Tooltip>
-                                </ButtonGroup>
+                                {!TodoStore.getLoading &&
+                                    <ButtonGroup>
+                                    <Tooltip placement="topLeft" title="Click to retrieve this client">
+                                        <Popconfirm
+                                            placement="topRight"
+                                            title="Do you want to retrieve this client?"
+                                            onConfirm={retrieveClient}
+                                            okText="Yes"
+                                            cancelText="No"
+                                        >  
+                                        <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                        </Popconfirm>
+                                    </Tooltip>
+                                    </ButtonGroup>
+                                }
+                                {TodoStore.getLoading &&
+                                    <div style={{fontSize:'1em',
+                                    backgroundColor:'#a0d911',
+                                    height:'2em',
+                                    borderRadius:'0.5em',
+                                    width:'12em',
+                                    textAlign:'center',
+                                    padding:'0.25em',
+                                    color:'#ffffff'}}>
+                                        Loading... Please wait.
+                                    </div>
+
+                                }
+                                
                             </td>
                         </tr>
                  )
