@@ -191,7 +191,7 @@ class PageContent extends Component {
             .map((data, index) => {
                 i++;
                 if ((index >= starts) && (index < ends)) {
-                    
+                    if(sizes===0){
                         return (
                         
                             <tr key={i}>
@@ -231,6 +231,66 @@ class PageContent extends Component {
                                 </td>
                             </tr>
                         )
+                    }else {
+                        return (
+                           
+                            <Col key={data.key} xs={12} md={12} style={{
+                                backgroundColor: '#bae7ff',
+                                height: 'auto',
+                                marginTop: '0.5em',
+                                minHeight: '5em',
+                                padding: '1em 0.5em 1em 0.5em',
+                                borderRadius: '0.5em'
+                            }}>
+                                <Row >
+                                     <Col xs={12} md={12} >
+                                         <Row>
+                                            <Col xs={6} md={6}>
+                                                <Row>
+                                                    <Col xs={12} md={12} >
+                                                        <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Email:</span> {data.email}</h4>
+                                                    </Col>
+                                                    <Col xs={12} md={12} >
+                                                        <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Name:</span> {data.firstname} {data.middlename} {data.lastname}</h4>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                            <Col xs={6} md={6}>
+                                                <img src={TodoStore.getAddUserProfilePath+data.image} style={{width:'10em'}}/>
+                                            </Col>
+                                         </Row>
+                                        
+                                    </Col>
+                                    <Col xs={12} md={12} >
+                                        <div style={{ borderTop: '1px solid', width: '100%' }}>
+
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={12} style={{textAlign:'right',paddingTop:'0.5em'}}>
+                                    {!TodoStore.getLoading &&
+                                           <ButtonGroup>
+                                           <Tooltip placement="topLeft" title="Click to retrieve this administrator">
+                                               <Popconfirm
+                                                   placement="topRight"
+                                                   title="Do you want to retrieve this administrator?"
+                                                   onConfirm={removeAdministrator}
+                                                   okText="Yes"
+                                                   cancelText="No"
+                                               >
+                                                   <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                               </Popconfirm>
+                                           </Tooltip>
+                                       </ButtonGroup>
+                                     }
+                                     {TodoStore.getLoading &&
+                                        <Spin/>
+                                     }
+                                    </Col>
+                                </Row>
+                            </Col>
+                        )
+                    }
+                       
                     
                     
                 }
@@ -327,7 +387,15 @@ class PageContent extends Component {
 
                                                 }
 
-                                                <Pagination
+                                                {sizes !== 0 &&
+                                                    <Col xs={12} md={12} style={{ paddingTop: '0.5em' }}>
+                                                        <Row>
+                                                            {datalist}
+                                                        </Row>
+                                                    </Col>
+                                                }
+
+                                                <Pagination style={{marginTop:'0.5em'}}
                                                     current={TodoStore.getPage}
                                                     total={(i / TodoStore.getNumberDisplay) * 10}
                                                     onChange={TodoStore.setPage} />

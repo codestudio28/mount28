@@ -32,6 +32,7 @@ class PageLayout extends Component {
                     } else {
                         TodoStore.setLoading(false);
                         reactLocalStorage.set('userid',res.data[0]._id);
+                        reactLocalStorage.set('usertype',res.data[0].usertype);
                         reactLocalStorage.set('useremail',res.data[0].email);
                         reactLocalStorage.set('userlastname',res.data[0].lastname);
                         reactLocalStorage.set('usermiddlename',res.data[0].middlename);

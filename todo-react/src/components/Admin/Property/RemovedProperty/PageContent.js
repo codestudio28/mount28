@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu,Spin, Icon,InputNumber, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
+import { Layout, Menu, Spin, Icon, InputNumber, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
 import { Container, Row, Col } from 'react-bootstrap';
 import './content.css';
 import { Input } from 'antd';
@@ -33,7 +33,7 @@ class PageContent extends Component {
     componentDidMount() {
         const TodoStore = this.props.TodoStore;
         var port = TodoStore.getPort;
-        fetch(port+'propertyrouter/')
+        fetch(port + 'propertyrouter/')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -60,22 +60,22 @@ class PageContent extends Component {
         items.filter(item => {
             return item.status.indexOf("REMOVED") >= 0
         }).map(item => (
-                dataSource.push({
-                    key: item._id,
-                    block: item.block,
-                    lot: item.lot,
-                    type: item.type,
-                    area: item.area,
-                    price: item.price,
-                    status: item.status,
+            dataSource.push({
+                key: item._id,
+                block: item.block,
+                lot: item.lot,
+                type: item.type,
+                area: item.area,
+                price: item.price,
+                status: item.status,
 
-                })
-            ));
+            })
+        ));
 
         const getProperty = () => {
-           
+
             var port = TodoStore.getPort;
-            fetch(port+'propertyrouter/')
+            fetch(port + 'propertyrouter/')
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -84,24 +84,24 @@ class PageContent extends Component {
                     })
                 });
         }
-      
+
         const removeProperty = () => {
             var id = TodoStore.getRemoveId;
             const client = {
                 status: 'NEW'
             }
-           TodoStore.setLoading(true);
+            TodoStore.setLoading(true);
             var port = TodoStore.getPort;
-            axios.post(port+'propertyrouter/status/' + id, client)
+            axios.post(port + 'propertyrouter/status/' + id, client)
                 .then(res => {
                     console.log(res.data);
                     if (res.data === '101') {
-                        
+
                         getProperty();
                         TodoStore.setLoading(false);
                         openNotification("Retrieved");
                     } else {
-                        
+
                         openNotification("Server");
                         TodoStore.setLoading(false);
                     }
@@ -209,8 +209,9 @@ class PageContent extends Component {
             .map((data, index) => {
                 i++;
                 if ((index >= starts) && (index < ends)) {
+                    if (sizes === 0) {
                         return (
-                        
+
                             <tr key={i}>
                                 <td>{i}</td>
                                 <td>{data.block}</td>
@@ -220,37 +221,90 @@ class PageContent extends Component {
                                 <td>Php. {data.price}</td>
                                 <td>{data.status}</td>
                                 <td>
-                                {!TodoStore.getLoading &&
-                                    <ButtonGroup>
-                                        <Tooltip placement="topLeft" title="Click to retrieve this property">
-                                            <Popconfirm
-                                                placement="topRight"
-                                                title="Do you want to retrieve this property?"
-                                                onConfirm={removeProperty}
-                                                okText="Yes"
-                                                cancelText="No"
-                                            >
-                                                <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                            </Popconfirm>
-                                        </Tooltip>
-                                    </ButtonGroup>
+                                    {!TodoStore.getLoading &&
+                                        <ButtonGroup>
+                                            <Tooltip placement="topLeft" title="Click to retrieve this property">
+                                                <Popconfirm
+                                                    placement="topRight"
+                                                    title="Do you want to retrieve this property?"
+                                                    onConfirm={removeProperty}
+                                                    okText="Yes"
+                                                    cancelText="No"
+                                                >
+                                                    <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Popconfirm>
+                                            </Tooltip>
+                                        </ButtonGroup>
                                     }
                                     {TodoStore.getLoading &&
-                                        <div style={{fontSize:'1em',
-                                        backgroundColor:'#a0d911',
-                                        height:'2em',
-                                        borderRadius:'0.5em',
-                                        width:'12em',
-                                        textAlign:'center',
-                                        padding:'0.25em',
-                                        color:'#ffffff'}}>
-                                        Loading... Please wait.
+                                        <div style={{
+                                            fontSize: '1em',
+                                            backgroundColor: '#a0d911',
+                                            height: '2em',
+                                            borderRadius: '0.5em',
+                                            width: '12em',
+                                            textAlign: 'center',
+                                            padding: '0.25em',
+                                            color: '#ffffff'
+                                        }}>
+                                            Loading... Please wait.
                                     </div>
                                     }
                                 </td>
                             </tr>
                         )
-                     
+                    } else {
+                        return (
+
+                            <Col key={data.key} xs={12} md={12} style={{
+                                backgroundColor: '#bae7ff',
+                                height: 'auto',
+                                marginTop: '0.5em',
+                                minHeight: '5em',
+                                padding: '1em 0.5em 1em 0.5em',
+                                borderRadius: '0.5em'
+                            }}>
+                                <Row >
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}><span style={{ color: '#8c8c8c' }}>Block:</span> {data.block}&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#8c8c8c' }}>Lot: </span>{data.lot}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}><span style={{ color: '#8c8c8c' }}>Type:</span> {data.type}&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#8c8c8c' }}>Area:</span> {data.area}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}><span style={{ color: '#8c8c8c' }}>Price:</span> {data.price}&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#8c8c8c' }}>Status: </span>{data.status}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12} >
+                                        <div style={{ borderTop: '1px solid', width: '100%' }}>
+
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={12} style={{ textAlign: 'right', paddingTop: '0.5em' }}>
+                                        {!TodoStore.getLoading &&
+                                            <ButtonGroup>
+                                                <Tooltip placement="topLeft" title="Click to retrieve this property">
+                                                    <Popconfirm
+                                                        placement="topRight"
+                                                        title="Do you want to retrieve this property?"
+                                                        onConfirm={removeProperty}
+                                                        okText="Yes"
+                                                        cancelText="No"
+                                                    >
+                                                        <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                    </Popconfirm>
+                                                </Tooltip>
+                                            </ButtonGroup>
+                                        }
+                                        {TodoStore.getLoading &&
+                                            <Spin />
+                                        }
+                                    </Col>
+                                </Row>
+                            </Col>
+                        )
+                    }
+
+
                 }
             })
         return (
@@ -272,7 +326,7 @@ class PageContent extends Component {
                                         }}
                                     >
                                         <Row>
-                                            
+
                                             <Col xs={12} md={4} style={{ paddingTop: '0.5em' }}>
                                                 <Row>
                                                     <Col xs={12} md={12}>
@@ -348,7 +402,15 @@ class PageContent extends Component {
 
                                                 }
 
-                                                <Pagination
+                                                    {sizes !== 0 &&
+                                                    <Col xs={12} md={12} style={{ paddingTop: '0.5em' }}>
+                                                        <Row>
+                                                            {datalist}
+                                                        </Row>
+                                                    </Col>
+                                                }
+
+                                                <Pagination style={{marginTop:'0.5em'}}
                                                     current={TodoStore.getPage}
                                                     total={(i / TodoStore.getNumberDisplay) * 10}
                                                     onChange={TodoStore.setPage} />
@@ -360,7 +422,7 @@ class PageContent extends Component {
                             </div>
                         </Col>
                     </Row>
-                   
+
                 </Container>
 
 

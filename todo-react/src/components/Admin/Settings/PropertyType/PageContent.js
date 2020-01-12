@@ -300,72 +300,148 @@ class PageContent extends Component {
             .map((data, index) => {
                 i++;
                 if ((index >= starts) && (index < ends)) {
+                    if(sizes===0){
+                        return (
 
-                    return (
-
-                        <tr key={i}>
-                            <td>{i}</td>
-                            <td>{data.typename}</td>
-                            <td>{data.description}</td>
-                            <td>{data.equity}%</td>
-                            <td>{data.misc}%</td>
-                            <td>{data.status}</td>
-                            <td>
-                            {!TodoStore.getLoading &&
-                                <ButtonGroup>
-                                    {data.status === "REMOVED" &&
-
-                                        <Tooltip placement="topLeft" title="Click to retrieve this property type">
-                                            <Popconfirm
-                                                placement="topRight"
-                                                title="Do you want to remove this retrieve type?"
-                                                onConfirm={retrieveProperty}
-                                                okText="Yes"
-                                                cancelText="No"
-                                            >
-                                                <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                            </Popconfirm>
-                                        </Tooltip>
-                                    }
-                                    {data.status !== "REMOVED" &&
-                                        <React.Fragment>
-
-                                            <Tooltip placement="topLeft" title="Click to update property type information">
-                                                <Button style={{ backgroundColor: '#00a2ae' }}
-                                                    onClick={(event) => setUpdate(data.key)}
-                                                ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                            </Tooltip>
-                                            <Tooltip placement="topLeft" title="Click to remove this property type">
+                            <tr key={i}>
+                                <td>{i}</td>
+                                <td>{data.typename}</td>
+                                <td>{data.description}</td>
+                                <td>{data.equity}%</td>
+                                <td>{data.misc}%</td>
+                                <td>{data.status}</td>
+                                <td>
+                                {!TodoStore.getLoading &&
+                                    <ButtonGroup>
+                                        {data.status === "REMOVED" &&
+    
+                                            <Tooltip placement="topLeft" title="Click to retrieve this property type">
                                                 <Popconfirm
                                                     placement="topRight"
-                                                    title="Do you want to remove this property type?"
-                                                    onConfirm={removeProperty}
+                                                    title="Do you want to remove this retrieve type?"
+                                                    onConfirm={retrieveProperty}
                                                     okText="Yes"
                                                     cancelText="No"
                                                 >
-                                                    <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                    <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
                                                 </Popconfirm>
                                             </Tooltip>
-                                            
-                                        </React.Fragment>
+                                        }
+                                        {data.status !== "REMOVED" &&
+                                            <React.Fragment>
+    
+                                                <Tooltip placement="topLeft" title="Click to update property type information">
+                                                    <Button style={{ backgroundColor: '#00a2ae' }}
+                                                        onClick={(event) => setUpdate(data.key)}
+                                                    ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Tooltip>
+                                                <Tooltip placement="topLeft" title="Click to remove this property type">
+                                                    <Popconfirm
+                                                        placement="topRight"
+                                                        title="Do you want to remove this property type?"
+                                                        onConfirm={removeProperty}
+                                                        okText="Yes"
+                                                        cancelText="No"
+                                                    >
+                                                        <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                    </Popconfirm>
+                                                </Tooltip>
+                                                
+                                            </React.Fragment>
+                                        }
+                                    </ButtonGroup>
                                     }
-                                </ButtonGroup>
-                                }
-                                {TodoStore.getLoading &&
-                                        <div style={{fontSize:'1em',
-                                        backgroundColor:'#a0d911',
-                                        height:'2em',
-                                        borderRadius:'0.5em',
-                                        width:'12em',
-                                        textAlign:'center',
-                                        padding:'0.25em',
-                                        color:'#ffffff'}}>
-                                        Loading... Please wait.
-                                    </div>
-                                    }
-                            </td>
-                        </tr>
-                    )
+                                    {TodoStore.getLoading &&
+                                            <div style={{fontSize:'1em',
+                                            backgroundColor:'#a0d911',
+                                            height:'2em',
+                                            borderRadius:'0.5em',
+                                            width:'12em',
+                                            textAlign:'center',
+                                            padding:'0.25em',
+                                            color:'#ffffff'}}>
+                                            Loading... Please wait.
+                                        </div>
+                                        }
+                                </td>
+                            </tr>
+                        )
+                    }else {
+                        return (
+                           
+                            <Col key={data.key} xs={12} md={12} style={{
+                                backgroundColor: '#bae7ff',
+                                height: 'auto',
+                                marginTop: '0.5em',
+                                minHeight: '5em',
+                                padding: '1em 0.5em 1em 0.5em',
+                                borderRadius: '0.5em'
+                            }}>
+                                <Row >
+                                    <Col xs={12} md={12}>
+                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Type Name:</span> {data.typename}&nbsp;&nbsp;&nbsp;&nbsp;<span style={{color:'#8c8c8c'}}>Description: </span>{data.description}</h4>
+                                        </Col>
+                                        <Col xs={12} md={12}>
+                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Equity:</span> {data.equity} %&nbsp;&nbsp;&nbsp;&nbsp;<span style={{color:'#8c8c8c'}}>Miscellaneous Fee:</span> {data.misc} %</h4>
+                                        </Col>
+                                        <Col xs={12} md={12}>
+                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Status: </span>{data.status}</h4>
+                                        </Col>
+                                    <Col xs={12} md={12} >
+                                        <div style={{ borderTop: '1px solid', width: '100%' }}>
+
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={12} style={{textAlign:'right',paddingTop:'0.5em'}}>
+                                    {!TodoStore.getLoading &&
+                                       <ButtonGroup>
+                                       {data.status === "REMOVED" &&
+   
+                                           <Tooltip placement="topLeft" title="Click to retrieve this property type">
+                                               <Popconfirm
+                                                   placement="topRight"
+                                                   title="Do you want to remove this retrieve type?"
+                                                   onConfirm={retrieveProperty}
+                                                   okText="Yes"
+                                                   cancelText="No"
+                                               >
+                                                   <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                               </Popconfirm>
+                                           </Tooltip>
+                                       }
+                                       {data.status !== "REMOVED" &&
+                                           <React.Fragment>
+   
+                                               <Tooltip placement="topLeft" title="Click to update property type information">
+                                                   <Button style={{ backgroundColor: '#00a2ae' }}
+                                                       onClick={(event) => setUpdate(data.key)}
+                                                   ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                               </Tooltip>
+                                               <Tooltip placement="topLeft" title="Click to remove this property type">
+                                                   <Popconfirm
+                                                       placement="topRight"
+                                                       title="Do you want to remove this property type?"
+                                                       onConfirm={removeProperty}
+                                                       okText="Yes"
+                                                       cancelText="No"
+                                                   >
+                                                       <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                   </Popconfirm>
+                                               </Tooltip>
+                                               
+                                           </React.Fragment>
+                                       }
+                                   </ButtonGroup>
+                                     }
+                                     {TodoStore.getLoading &&
+                                        <Spin/>
+                                     }
+                                    </Col>
+                                </Row>
+                            </Col>
+                        )
+                    }
+                   
 
                 }
             })
@@ -470,7 +546,15 @@ class PageContent extends Component {
 
                                                 }
 
-                                                <Pagination
+                                                {sizes !== 0 &&
+                                                    <Col xs={12} md={12} style={{ paddingTop: '0.5em' }}>
+                                                        <Row>
+                                                            {datalist}
+                                                        </Row>
+                                                    </Col>
+                                                }
+
+                                                <Pagination style={{marginTop:'0.5em'}}
                                                     current={TodoStore.getPage}
                                                     total={(i / TodoStore.getNumberDisplay) * 10}
                                                     onChange={TodoStore.setPage} />

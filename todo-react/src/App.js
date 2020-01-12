@@ -16,6 +16,7 @@ import PropertyType from './components/Admin/Settings/PropertyType/PageLayout';
 import PaymentScheme from './components/Admin/Settings/PaymentScheme/PageLayout';
 import AccountInfo from './components/Admin/Account/AccountInformation/PageLayout';
 import ChangePassword from './components/Admin/Account/ChangePassword/PageLayout';
+import Buy from './components/Admin/Transaction/Buy/PageLayout';
 function App() {
 
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/scheme" exact component={PaymentScheme}></Route>
           <Route path="/account" exact component={AccountInfo}></Route>
           <Route path="/account/password" exact component={ChangePassword}></Route>
+          <Route path="/buy" exact component={Buy}></Route>
         </Switch>
     </Router>
   );

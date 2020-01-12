@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Badge,Icon,Spin, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
+import { Layout, Menu, Badge, Icon, Spin, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
 import { Container, Row, Col } from 'react-bootstrap';
 import './content.css';
 import { Input } from 'antd';
@@ -33,14 +33,14 @@ class PageContent extends Component {
     componentDidMount() {
         const TodoStore = this.props.TodoStore;
         var port = TodoStore.getPort;
-            fetch(port+'clientrouter/')
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isloaded: true,
-                        items: json,
-                    })
-                });
+        fetch(port + 'clientrouter/')
+            .then(res => res.json())
+            .then(json => {
+                this.setState({
+                    isloaded: true,
+                    items: json,
+                })
+            });
         window.addEventListener("resize", this.resize.bind(this));
         this.resize();
     }
@@ -56,60 +56,60 @@ class PageContent extends Component {
         var { isloaded, items, sizes } = this.state;
 
         const dataSource = [];
-        
+
         items.filter(item => {
             return item.status.indexOf("ACTIVE") >= 0
         })
-        .map(item => (
-            dataSource.push({
-                key: item._id,
-                lastname: item.lastname,
-                firstname: item.firstname,
-                middlename: item.middlename,
-                contactnumber: item.contactnumber,
-                address: item.address,
-                city: item.city,
-                province: item.province,
-                status: item.status,
+            .map(item => (
+                dataSource.push({
+                    key: item._id,
+                    lastname: item.lastname,
+                    firstname: item.firstname,
+                    middlename: item.middlename,
+                    contactnumber: item.contactnumber,
+                    address: item.address,
+                    city: item.city,
+                    province: item.province,
+                    status: item.status,
 
-            })
-        ));
-       
-        const getClient = () =>{
-          
-            var port = TodoStore.getPort;
-            fetch(port+'clientrouter/')
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isloaded: true,
-                    items: json,
                 })
-            });
+            ));
+
+        const getClient = () => {
+
+            var port = TodoStore.getPort;
+            fetch(port + 'clientrouter/')
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isloaded: true,
+                        items: json,
+                    })
+                });
         }
         const addClient = () => {
             if ((TodoStore.getFirstname.length === 0) || (TodoStore.getLastname.length === 0)
                 || (TodoStore.getMiddlename.length === 0) || (TodoStore.getContactNumber.length === 0)
-                || (TodoStore.getAddress.length === 0) || (TodoStore.getCity.length === 0) 
+                || (TodoStore.getAddress.length === 0) || (TodoStore.getCity.length === 0)
                 || (TodoStore.getProvince.length === 0)) {
                 openNotification("Blank");
             } else {
                 TodoStore.setAdding(true);
                 const client = {
-                    lastname : TodoStore.getLastname,
-                    firstname : TodoStore.getFirstname,
-                    middlename : TodoStore.getMiddlename,
-                    contactnumber : TodoStore.getContactNumber,
-                    address : TodoStore.getAddress,
-                    city : TodoStore.getCity,
-                    province : TodoStore.getProvince,
-                    status : "ACTIVE"
+                    lastname: TodoStore.getLastname,
+                    firstname: TodoStore.getFirstname,
+                    middlename: TodoStore.getMiddlename,
+                    contactnumber: TodoStore.getContactNumber,
+                    address: TodoStore.getAddress,
+                    city: TodoStore.getCity,
+                    province: TodoStore.getProvince,
+                    status: "ACTIVE"
 
                 }
-               
+
                 var port = TodoStore.getPort;
                 console.log(port);
-                axios.post(port+'clientrouter/add', client)
+                axios.post(port + 'clientrouter/add', client)
                     .then(res => {
                         console.log(res.data);
                         if (res.data === '202') {
@@ -120,17 +120,17 @@ class PageContent extends Component {
                             openNotification("Success");
                             getClient();
                             TodoStore.setHandleCancel();
-                        }else{
+                        } else {
                             TodoStore.setAdding(false);
                             openNotification("Server");
                         }
                     });
             }
         }
-        const setUpdate = (id) =>{
+        const setUpdate = (id) => {
             TodoStore.setUpdateId(id);
             TodoStore.setUpdateModal(true);
-            const singlelist =dataSource.filter(data => {
+            const singlelist = dataSource.filter(data => {
                 return data.key.indexOf(id) >= 0
             }).map((data, index) => {
                 TodoStore.setLastname2(data.lastname);
@@ -145,25 +145,25 @@ class PageContent extends Component {
         const updateClient = () => {
             if ((TodoStore.getFirstname.length === 0) || (TodoStore.getLastname.length === 0)
                 || (TodoStore.getMiddlename.length === 0) || (TodoStore.getContactNumber.length === 0)
-                || (TodoStore.getAddress.length === 0) || (TodoStore.getCity.length === 0) 
+                || (TodoStore.getAddress.length === 0) || (TodoStore.getCity.length === 0)
                 || (TodoStore.getProvince.length === 0)) {
                 openNotification("Blank");
             } else {
                 TodoStore.setAdding(true);
                 let id = TodoStore.getUpdateId;
                 const client = {
-                    lastname : TodoStore.getLastname,
-                    firstname : TodoStore.getFirstname,
-                    middlename : TodoStore.getMiddlename,
-                    contactnumber : TodoStore.getContactNumber,
-                    address : TodoStore.getAddress,
-                    city : TodoStore.getCity,
-                    province : TodoStore.getProvince
+                    lastname: TodoStore.getLastname,
+                    firstname: TodoStore.getFirstname,
+                    middlename: TodoStore.getMiddlename,
+                    contactnumber: TodoStore.getContactNumber,
+                    address: TodoStore.getAddress,
+                    city: TodoStore.getCity,
+                    province: TodoStore.getProvince
 
                 }
-               
+
                 var port = TodoStore.getPort;
-                axios.post(port+'clientrouter/update/'+id, client)
+                axios.post(port + 'clientrouter/update/' + id, client)
                     .then(res => {
                         if (res.data === '202') {
                             TodoStore.setAdding(false);
@@ -173,31 +173,31 @@ class PageContent extends Component {
                             openNotification("Update");
                             getClient();
                             TodoStore.setHandleCancel();
-                        }else{
+                        } else {
                             TodoStore.setAdding(false);
                             openNotification("Server");
                         }
                     });
             }
         }
-        const removeClient = () =>{
+        const removeClient = () => {
             var id = TodoStore.getRemoveId;
-                const client = {
-                         status:'REMOVED'
-                }
-               TodoStore.setLoading(true);
-                var port = TodoStore.getPort;
-                axios.post(port+'clientrouter/status/'+id, client)
-                        .then(res => {
-                            console.log(res.data);
-                            if (res.data === '101') {
-                                getClient();
-                                TodoStore.setLoading(false);
-                                openNotification("Removed");
-                            }else{
-                                TodoStore.setLoading(false);
-                                openNotification("Server");
-                            }
+            const client = {
+                status: 'REMOVED'
+            }
+            TodoStore.setLoading(true);
+            var port = TodoStore.getPort;
+            axios.post(port + 'clientrouter/status/' + id, client)
+                .then(res => {
+                    console.log(res.data);
+                    if (res.data === '101') {
+                        getClient();
+                        TodoStore.setLoading(false);
+                        openNotification("Removed");
+                    } else {
+                        TodoStore.setLoading(false);
+                        openNotification("Server");
+                    }
                 });
         }
         const openNotification = (value) => {
@@ -249,7 +249,7 @@ class PageContent extends Component {
                     icon: <Icon type='check' style={{ color: '#52c41a' }} />,
                 });
 
-            }else if (value === "Removed") {
+            } else if (value === "Removed") {
                 notification.open({
                     message: 'Success',
                     description: 'Successfully removed client.',
@@ -270,9 +270,9 @@ class PageContent extends Component {
         ends = parseInt(page) * parseInt(numberdisplay);
         starts = ends - parseInt(numberdisplay);
 
-     
-        const datalist =dataSource.filter(data => {
-           
+
+        const datalist = dataSource.filter(data => {
+
             if (TodoStore.filter === 'All') {
                 return data.lastname.indexOf(TodoStore.search) >= 0
             } else if (TodoStore.filter === 'Lastname') {
@@ -285,58 +285,118 @@ class PageContent extends Component {
                 return data.city.indexOf(TodoStore.search) >= 0
             } else if (TodoStore.filter === 'Province') {
                 return data.province.indexOf(TodoStore.search) >= 0
-            } 
+            }
 
         })
-        .map((data, index) => {
-            i++;
-             if ((index >= starts) && (index < ends)) {
-                 
-                 return (
-                    <tr key={i}>
-                            <td>{i}</td>
-                            <td>{data.firstname} {data.middlename} {data.lastname} </td>
-                            <td>{data.contactnumber}</td>
-                            <td>{data.address} {data.city} {data.province}</td>
-                            <td>
-                                {!TodoStore.getLoading &&
-                                    <ButtonGroup>
-                                    <Tooltip placement="topLeft" title="Click to update client information">
-                                        <Button style={{ backgroundColor: '#00a2ae' }}
-                                            onClick={(event) => setUpdate(data.key)}
-                                        ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                    </Tooltip>
-                                    <Tooltip placement="topLeft" title="Click to remove this client">
-                                        <Popconfirm
-                                            placement="topRight"
-                                            title="Do you want to remove this client?"
-                                            onConfirm={removeClient}
-                                            okText="Yes"
-                                            cancelText="No"
-                                        >  
-                                        <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                        </Popconfirm>
-                                    </Tooltip>
-                                    </ButtonGroup>
-                                }
-                                {TodoStore.getLoading &&
-                                    <div style={{fontSize:'1em',
-                                                backgroundColor:'#a0d911',
-                                                height:'2em',
-                                                borderRadius:'0.5em',
-                                                width:'12em',
-                                                textAlign:'center',
-                                                padding:'0.25em',
-                                                color:'#ffffff'}}>
-                                        Loading... Please wait.
-                                    </div>
-                     
-                                }
-                            </td>
-                        </tr>
-                 )
-             }
-        })
+            .map((data, index) => {
+                i++;
+
+                if ((index >= starts) && (index < ends)) {
+                    if (sizes === 0) {
+                        return (
+
+                            <tr key={i}>
+                                <td>{i}</td>
+                                <td>{data.firstname} {data.middlename} {data.lastname} </td>
+                                <td>{data.contactnumber}</td>
+                                <td>{data.address} {data.city} {data.province}</td>
+                                <td>
+                                    {!TodoStore.getLoading &&
+                                        <ButtonGroup>
+                                            <Tooltip placement="topLeft" title="Click to update client information">
+                                                <Button style={{ backgroundColor: '#00a2ae' }}
+                                                    onClick={(event) => setUpdate(data.key)}
+                                                ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                            </Tooltip>
+                                            <Tooltip placement="topLeft" title="Click to remove this client">
+                                                <Popconfirm
+                                                    placement="topRight"
+                                                    title="Do you want to remove this client?"
+                                                    onConfirm={removeClient}
+                                                    okText="Yes"
+                                                    cancelText="No"
+                                                >
+                                                    <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Popconfirm>
+                                            </Tooltip>
+                                        </ButtonGroup>
+                                    }
+                                    {TodoStore.getLoading &&
+                                        <div style={{
+                                            fontSize: '1em',
+                                            backgroundColor: '#a0d911',
+                                            height: '2em',
+                                            borderRadius: '0.5em',
+                                            width: '12em',
+                                            textAlign: 'center',
+                                            padding: '0.25em',
+                                            color: '#ffffff'
+                                        }}>
+                                            Loading... Please wait.
+                                        </div>
+
+                                    }
+                                </td>
+                            </tr>
+                        )
+                    } else {
+                        return (
+                           
+                            <Col key={data.key} xs={12} md={12} style={{
+                                backgroundColor: '#bae7ff',
+                                height: 'auto',
+                                marginTop: '0.5em',
+                                minHeight: '5em',
+                                padding: '1em 0.5em 1em 0.5em',
+                                borderRadius: '0.5em'
+                            }}>
+                                <Row >
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}>Client name: {data.firstname} {data.middlename} {data.lastname}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}>Address: {data.address} {data.city} {data.province}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}>Contact number: {data.contactnumber}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12} >
+                                        <div style={{ borderTop: '1px solid', width: '100%' }}>
+
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={12} style={{textAlign:'right',paddingTop:'0.5em'}}>
+                                    {!TodoStore.getLoading &&
+                                        <ButtonGroup>
+                                            <Tooltip placement="topLeft" title="Click to update client information">
+                                                <Button style={{ backgroundColor: '#00a2ae' }}
+                                                    onClick={(event) => setUpdate(data.key)}
+                                                ><Icon type="edit" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                            </Tooltip>
+                                            <Tooltip placement="topLeft" title="Click to remove this client">
+                                                <Popconfirm
+                                                    placement="topRight"
+                                                    title="Do you want to remove this client?"
+                                                    onConfirm={removeClient}
+                                                    okText="Yes"
+                                                    cancelText="No"
+                                                >
+                                                    <Button style={{ backgroundColor: '#ff4d4f' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="delete" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Popconfirm>
+                                            </Tooltip>
+                                        </ButtonGroup>
+                                     }
+                                     {TodoStore.getLoading &&
+                                        <Spin/>
+                                     }
+                                    </Col>
+                                </Row>
+                            </Col>
+                        )
+                    }
+
+                }
+            })
         return (
 
             <React.Fragment>
@@ -434,8 +494,15 @@ class PageContent extends Component {
                                                     </table>
 
                                                 }
-                                              
-                                                  <Pagination
+                                                {sizes !== 0 &&
+                                                    <Col xs={12} md={12} style={{ paddingTop: '0.5em' }}>
+                                                        <Row>
+                                                            {datalist}
+                                                        </Row>
+                                                    </Col>
+                                                }
+
+                                                <Pagination style={{marginTop:'0.5em'}}
                                                     current={TodoStore.getPage}
                                                     total={(i / TodoStore.getNumberDisplay) * 10}
                                                     onChange={TodoStore.setPage} />
@@ -455,92 +522,92 @@ class PageContent extends Component {
                         onCancel={TodoStore.setHandleCancel}
                     >
                         {!TodoStore.getAdding &&
-                             <Row>
-                             <Col xs={12} md={12}>
-                                 <Row>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>First Name</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter first name *(Required)"
-                                             onChange={TodoStore.setFirstname}
-                                             value={TodoStore.getFirstname}
-                                         />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Middle Name</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter middle name *(Required)"
-                                             onChange={TodoStore.setMiddlename}
-                                             value={TodoStore.getMiddlename}
-                                         />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Last Name</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter last name *(Required)"
-                                             onChange={TodoStore.setLastname}
-                                             value={TodoStore.getLastname}
-                                         />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Contact Number</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter contact number *(Required)"
-                                             onChange={TodoStore.setContactNumber}
-                                             value={TodoStore.getContactNumber}
-                                         />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Address</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter housenumber, street, barangay *(Required)"
-                                             onChange={TodoStore.setAddress}
-                                             value={TodoStore.getAddress}
-                                         />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>City</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter city *(Required)"
-                                             onChange={TodoStore.setCity}
-                                             value={TodoStore.getCity}
-                                         />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                         <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Province</h4>
-                                     </Col>
-                                     <Col xs={12} md={12} >
-                                         <Input placeholder="Enter province *(Required)"
-                                             onChange={TodoStore.setProvince}
-                                             value={TodoStore.getProvince}
-                                         />
-                                     </Col>
-                                 </Row>
-                             </Col>
-                         </Row>
+                            <Row>
+                                <Col xs={12} md={12}>
+                                    <Row>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>First Name</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter first name *(Required)"
+                                                onChange={TodoStore.setFirstname}
+                                                value={TodoStore.getFirstname}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Middle Name</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter middle name *(Required)"
+                                                onChange={TodoStore.setMiddlename}
+                                                value={TodoStore.getMiddlename}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Last Name</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter last name *(Required)"
+                                                onChange={TodoStore.setLastname}
+                                                value={TodoStore.getLastname}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Contact Number</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter contact number *(Required)"
+                                                onChange={TodoStore.setContactNumber}
+                                                value={TodoStore.getContactNumber}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Address</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter housenumber, street, barangay *(Required)"
+                                                onChange={TodoStore.setAddress}
+                                                value={TodoStore.getAddress}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>City</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter city *(Required)"
+                                                onChange={TodoStore.setCity}
+                                                value={TodoStore.getCity}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Province</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter province *(Required)"
+                                                onChange={TodoStore.setProvince}
+                                                value={TodoStore.getProvince}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
                         }
                         {TodoStore.getAdding &&
-                             <Row>
-                             <Col xs={12} md={12}>
-                                 <Row>
-                                     <Col xs={12} md={12} style={{marginTop:'3em',textAlign:'center'}} >
+                            <Row>
+                                <Col xs={12} md={12}>
+                                    <Row>
+                                        <Col xs={12} md={12} style={{ marginTop: '3em', textAlign: 'center' }} >
                                             <Spin />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{marginTop:'1em',textAlign:'center'}} >
-                                        <h5 style={{ color: '#c4c4c4', fontSize: '1em' }}>Please wait... Saving client information</h5> 
-                                     </Col>
-                                     
-                                 </Row>
-                             </Col>
-                         </Row>
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '1em', textAlign: 'center' }} >
+                                            <h5 style={{ color: '#c4c4c4', fontSize: '1em' }}>Please wait... Saving client information</h5>
+                                        </Col>
+
+                                    </Row>
+                                </Col>
+                            </Row>
                         }
-                       
+
                     </Modal>
                     {/* Update Client */}
                     <Modal
@@ -551,91 +618,91 @@ class PageContent extends Component {
                     >
                         {!TodoStore.getAdding &&
                             <Row>
-                            <Col xs={12} md={12}>
-                                <Row>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>First Name</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter first name *(Required)"
-                                            onChange={TodoStore.setFirstname}
-                                            value={TodoStore.getFirstname}
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Middle Name</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter middle name *(Required)"
-                                            onChange={TodoStore.setMiddlename}
-                                            value={TodoStore.getMiddlename}
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Last Name</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter last name *(Required)"
-                                            onChange={TodoStore.setLastname}
-                                            value={TodoStore.getLastname}
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Contact Number</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter contact number *(Required)"
-                                            onChange={TodoStore.setContactNumber}
-                                            value={TodoStore.getContactNumber}
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Address</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter housenumber, street, barangay *(Required)"
-                                            onChange={TodoStore.setAddress}
-                                            value={TodoStore.getAddress}
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>City</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter city *(Required)"
-                                            onChange={TodoStore.setCity}
-                                            value={TodoStore.getCity}
-                                        />
-                                    </Col>
-                                    <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
-                                        <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Province</h4>
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <Input placeholder="Enter province *(Required)"
-                                            onChange={TodoStore.setProvince}
-                                            value={TodoStore.getProvince}
-                                        />
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
+                                <Col xs={12} md={12}>
+                                    <Row>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>First Name</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter first name *(Required)"
+                                                onChange={TodoStore.setFirstname}
+                                                value={TodoStore.getFirstname}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Middle Name</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter middle name *(Required)"
+                                                onChange={TodoStore.setMiddlename}
+                                                value={TodoStore.getMiddlename}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Last Name</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter last name *(Required)"
+                                                onChange={TodoStore.setLastname}
+                                                value={TodoStore.getLastname}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Contact Number</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter contact number *(Required)"
+                                                onChange={TodoStore.setContactNumber}
+                                                value={TodoStore.getContactNumber}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Address</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter housenumber, street, barangay *(Required)"
+                                                onChange={TodoStore.setAddress}
+                                                value={TodoStore.getAddress}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>City</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter city *(Required)"
+                                                onChange={TodoStore.setCity}
+                                                value={TodoStore.getCity}
+                                            />
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '0.5em' }}>
+                                            <h4 style={{ color: '#c4c4c4', fontSize: '1em' }}>Province</h4>
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <Input placeholder="Enter province *(Required)"
+                                                onChange={TodoStore.setProvince}
+                                                value={TodoStore.getProvince}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
                         }
                         {TodoStore.getAdding &&
-                             <Row>
-                             <Col xs={12} md={12}>
-                                 <Row>
-                                     <Col xs={12} md={12} style={{marginTop:'3em',textAlign:'center'}} >
+                            <Row>
+                                <Col xs={12} md={12}>
+                                    <Row>
+                                        <Col xs={12} md={12} style={{ marginTop: '3em', textAlign: 'center' }} >
                                             <Spin />
-                                     </Col>
-                                     <Col xs={12} md={12} style={{marginTop:'1em',textAlign:'center'}} >
-                                        <h5 style={{ color: '#c4c4c4', fontSize: '1em' }}>Please wait... Saving client information</h5> 
-                                     </Col>
-                                     
-                                 </Row>
-                             </Col>
-                         </Row>
+                                        </Col>
+                                        <Col xs={12} md={12} style={{ marginTop: '1em', textAlign: 'center' }} >
+                                            <h5 style={{ color: '#c4c4c4', fontSize: '1em' }}>Please wait... Saving client information</h5>
+                                        </Col>
+
+                                    </Row>
+                                </Col>
+                            </Row>
                         }
-                        
+
                     </Modal>
                 </Container>
 

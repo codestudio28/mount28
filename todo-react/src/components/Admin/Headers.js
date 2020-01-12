@@ -21,6 +21,10 @@ class Headers extends Component {
             reactLocalStorage.clear();
             window.open("/","_self");
         }
+
+        if(reactLocalStorage.get("usertype")===undefined){
+            window.open("/","_self");
+        }
         return (
             <React.Fragment>
                 <Header style={{ background: '#fff', padding: 0 }} >

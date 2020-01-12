@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Icon, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
+import { Layout, Menu, Icon, Spin,Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
 import { Container, Row, Col } from 'react-bootstrap';
 import './content.css';
 import { Input } from 'antd';
@@ -33,14 +33,14 @@ class PageContent extends Component {
     componentDidMount() {
         const TodoStore = this.props.TodoStore;
         var port = TodoStore.getPort;
-            fetch(port+'clientrouter/')
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isloaded: true,
-                        items: json,
-                    })
-                });
+        fetch(port + 'clientrouter/')
+            .then(res => res.json())
+            .then(json => {
+                this.setState({
+                    isloaded: true,
+                    items: json,
+                })
+            });
         window.addEventListener("resize", this.resize.bind(this));
         this.resize();
     }
@@ -56,56 +56,56 @@ class PageContent extends Component {
         var { isloaded, items, sizes } = this.state;
 
         const dataSource = [];
-        
+
         items.filter(item => {
             return item.status.indexOf("REMOVED") >= 0
         })
-        .map(item => (
-            dataSource.push({
-                key: item._id,
-                lastname: item.lastname,
-                firstname: item.firstname,
-                middlename: item.middlename,
-                contactnumber: item.contactnumber,
-                address: item.address,
-                city: item.city,
-                province: item.province,
-                status: item.status,
+            .map(item => (
+                dataSource.push({
+                    key: item._id,
+                    lastname: item.lastname,
+                    firstname: item.firstname,
+                    middlename: item.middlename,
+                    contactnumber: item.contactnumber,
+                    address: item.address,
+                    city: item.city,
+                    province: item.province,
+                    status: item.status,
 
-            })
-        ));
-       
-        const getClient = () =>{
-            var port = TodoStore.getPort;
-            fetch(port+'clientrouter/')
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isloaded: true,
-                    items: json,
                 })
-            });
+            ));
+
+        const getClient = () => {
+            var port = TodoStore.getPort;
+            fetch(port + 'clientrouter/')
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isloaded: true,
+                        items: json,
+                    })
+                });
         }
-       
-        const retrieveClient = () =>{
+
+        const retrieveClient = () => {
             TodoStore.setLoading(true);
             var id = TodoStore.getRemoveId;
-                const client = {
-                         status:'ACTIVE'
-                }
-               
-                var port = TodoStore.getPort;
-                axios.post(port+'clientrouter/status/'+id, client)
-                        .then(res => {
-                            console.log(res.data);
-                            if (res.data === '101') {
-                                TodoStore.setLoading(false);
-                                getClient();
-                                openNotification("Retrieved");
-                            }else{
-                                TodoStore.setLoading(false);
-                                openNotification("Server");
-                            }
+            const client = {
+                status: 'ACTIVE'
+            }
+
+            var port = TodoStore.getPort;
+            axios.post(port + 'clientrouter/status/' + id, client)
+                .then(res => {
+                    console.log(res.data);
+                    if (res.data === '101') {
+                        TodoStore.setLoading(false);
+                        getClient();
+                        openNotification("Retrieved");
+                    } else {
+                        TodoStore.setLoading(false);
+                        openNotification("Server");
+                    }
                 });
         }
         const openNotification = (value) => {
@@ -128,7 +128,7 @@ class PageContent extends Component {
                     icon: <Icon type='warning' style={{ color: '#faad14' }} />,
                 });
 
-            } 
+            }
         }
 
         i = 0;
@@ -139,9 +139,9 @@ class PageContent extends Component {
         ends = parseInt(page) * parseInt(numberdisplay);
         starts = ends - parseInt(numberdisplay);
 
-     
-        const datalist =dataSource.filter(data => {
-           
+
+        const datalist = dataSource.filter(data => {
+
             if (TodoStore.filter === 'All') {
                 return data.lastname.indexOf(TodoStore.search) >= 0
             } else if (TodoStore.filter === 'Lastname') {
@@ -154,54 +154,107 @@ class PageContent extends Component {
                 return data.city.indexOf(TodoStore.search) >= 0
             } else if (TodoStore.filter === 'Province') {
                 return data.province.indexOf(TodoStore.search) >= 0
-            } 
+            }
 
         })
-        .map((data, index) => {
-            i++;
-             if ((index >= starts) && (index < ends)) {
-                 
-                 return (
-                    <tr key={i}>
-                            <td>{i}</td>
-                            <td>{data.firstname} {data.middlename} {data.lastname} </td>
-                            <td>{data.contactnumber}</td>
-                            <td>{data.address} {data.city} {data.province}</td>
-                            <td>
-                                {!TodoStore.getLoading &&
-                                    <ButtonGroup>
-                                    <Tooltip placement="topLeft" title="Click to retrieve this client">
-                                        <Popconfirm
-                                            placement="topRight"
-                                            title="Do you want to retrieve this client?"
-                                            onConfirm={retrieveClient}
-                                            okText="Yes"
-                                            cancelText="No"
-                                        >  
-                                        <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                        </Popconfirm>
-                                    </Tooltip>
-                                    </ButtonGroup>
-                                }
-                                {TodoStore.getLoading &&
-                                    <div style={{fontSize:'1em',
-                                    backgroundColor:'#a0d911',
-                                    height:'2em',
-                                    borderRadius:'0.5em',
-                                    width:'12em',
-                                    textAlign:'center',
-                                    padding:'0.25em',
-                                    color:'#ffffff'}}>
-                                        Loading... Please wait.
-                                    </div>
+            .map((data, index) => {
+                i++;
+                if ((index >= starts) && (index < ends)) {
+                    if (sizes === 0) {
+                        return (
+                            <tr key={i}>
+                                <td>{i}</td>
+                                <td>{data.firstname} {data.middlename} {data.lastname} </td>
+                                <td>{data.contactnumber}</td>
+                                <td>{data.address} {data.city} {data.province}</td>
+                                <td>
+                                    {!TodoStore.getLoading &&
+                                        <ButtonGroup>
+                                            <Tooltip placement="topLeft" title="Click to retrieve this client">
+                                                <Popconfirm
+                                                    placement="topRight"
+                                                    title="Do you want to retrieve this client?"
+                                                    onConfirm={retrieveClient}
+                                                    okText="Yes"
+                                                    cancelText="No"
+                                                >
+                                                    <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Popconfirm>
+                                            </Tooltip>
+                                        </ButtonGroup>
+                                    }
+                                    {TodoStore.getLoading &&
+                                        <div style={{
+                                            fontSize: '1em',
+                                            backgroundColor: '#a0d911',
+                                            height: '2em',
+                                            borderRadius: '0.5em',
+                                            width: '12em',
+                                            textAlign: 'center',
+                                            padding: '0.25em',
+                                            color: '#ffffff'
+                                        }}>
+                                            Loading... Please wait.
+                                        </div>
 
-                                }
-                                
-                            </td>
-                        </tr>
-                 )
-             }
-        })
+                                    }
+
+                                </td>
+                            </tr>
+                        )
+                    } else {
+                        return (
+
+                            <Col key={data.key} xs={12} md={12} style={{
+                                backgroundColor: '#bae7ff',
+                                height: 'auto',
+                                marginTop: '0.5em',
+                                minHeight: '5em',
+                                padding: '1em 0.5em 1em 0.5em',
+                                borderRadius: '0.5em'
+                            }}>
+                                <Row >
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}>Client name: {data.firstname} {data.middlename} {data.lastname}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}>Address: {data.address} {data.city} {data.province}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12}>
+                                        <h4 style={{ fontSize: '1em' }}>Contact number: {data.contactnumber}</h4>
+                                    </Col>
+                                    <Col xs={12} md={12} >
+                                        <div style={{ borderTop: '1px solid', width: '100%' }}>
+
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={12} style={{ textAlign: 'right', paddingTop: '0.5em' }}>
+                                        {!TodoStore.getLoading &&
+                                            <ButtonGroup>
+                                                <Tooltip placement="topLeft" title="Click to retrieve this client">
+                                                    <Popconfirm
+                                                        placement="topRight"
+                                                        title="Do you want to retrieve this client?"
+                                                        onConfirm={retrieveClient}
+                                                        okText="Yes"
+                                                        cancelText="No"
+                                                    >
+                                                        <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                    </Popconfirm>
+                                                </Tooltip>
+                                            </ButtonGroup>
+                                        }
+                                        {TodoStore.getLoading &&
+                                            <Spin />
+                                        }
+                                    </Col>
+                                </Row>
+                            </Col>
+                        )
+                    }
+
+                }
+            })
         return (
 
             <React.Fragment>
@@ -221,7 +274,7 @@ class PageContent extends Component {
                                         }}
                                     >
                                         <Row>
-                                           
+
                                             <Col xs={12} md={4} style={{ paddingTop: '0.5em' }}>
                                                 <Row>
                                                     <Col xs={12} md={12}>
@@ -293,11 +346,19 @@ class PageContent extends Component {
                                                     </table>
 
                                                 }
-                                              
-                                                  <Pagination
+                                                {sizes !== 0 &&
+                                                    <Col xs={12} md={12} style={{ paddingTop: '0.5em' }}>
+                                                        <Row>
+                                                            {datalist}
+                                                        </Row>
+                                                    </Col>
+                                                }
+
+                                                <Pagination style={{marginTop:'0.5em'}}
                                                     current={TodoStore.getPage}
                                                     total={(i / TodoStore.getNumberDisplay) * 10}
                                                     onChange={TodoStore.setPage} />
+                                               
                                             </Col>
 
                                         </Row>
@@ -306,7 +367,7 @@ class PageContent extends Component {
                             </div>
                         </Col>
                     </Row>
-                  
+
                 </Container>
 
 
