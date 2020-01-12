@@ -16,7 +16,7 @@
   "keywords": [],
   "engines":{
     "node":"12.13.1",
-    "npm": "6.x"
+    "npm": "6.12.1"
   },
   "author": "",
   "license": "ISC",
