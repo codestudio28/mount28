@@ -14,9 +14,25 @@ const ButtonGroup = Button.Group;
 @inject('TodoStore')
 @observer
 class Headers extends Component {
-   
+    constructor(props) {
+        super(props);
+        this.state = {
+            isdefault: false,
+         
+
+        }
+    }
+    componentDidMount() {
+        if (reactLocalStorage.get('userimage') === "avatar.png") {
+            this.setState({
+                isdefault: true
+            });
+        }
+    }
+
     render() {
         const TodoStore = this.props.TodoStore;
+        var {isdefault} = this.state;
         const gotoLogout = () =>{
             reactLocalStorage.clear();
             window.open("/","_self");
@@ -64,8 +80,16 @@ class Headers extends Component {
                                     title={
                                         <React.Fragment>
                                            <Badge count={0} dot>
-                                            <Avatar src={TodoStore.getAddUserProfilePath+reactLocalStorage.get('userimage') } 
+                                               {isdefault &&
+                                                <Avatar src={TodoStore.getAddUserProfilePath+reactLocalStorage.get('userimage') } 
                                                     style={{"width":"3.5em","height":"3em"}} />
+                                               }
+                                               {!isdefault &&
+                                                     <Avatar src={reactLocalStorage.get('userimage') } 
+                                                     style={{"width":"3.5em","height":"3em"}} />
+                                               }
+                                           
+                                                 
                                             </Badge>
                                         </React.Fragment>
 

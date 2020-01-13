@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Spin, Icon, InputNumber, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
+
+import { Upload, message, Layout, Menu, Spin, Icon, InputNumber, Button, Avatar, Breadcrumb, Select, Pagination, Modal, Checkbox, notification, Tooltip, Popconfirm } from 'antd';
 import { Container, Row, Col } from 'react-bootstrap';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import './content.css';
@@ -9,6 +10,7 @@ import { inject, observer } from 'mobx-react';
 import axios from "axios";
 import BreadCrumb from '../../BreadCrumb';
 import Progress from './Progress';
+import ProfileImage from './ProfileImage';
 
 
 
@@ -57,6 +59,8 @@ class PageContent extends Component {
     render() {
         const TodoStore = this.props.TodoStore;
         var { isloaded, items, sizes, isdisplay, issaving, isuploading,file, filename, uploadedFile, message, uploadPercentage } = this.state;
+
+        
 
         if (isdisplay === false) {
             TodoStore.setEmail2(reactLocalStorage.get('useremail'));
@@ -122,91 +126,7 @@ class PageContent extends Component {
                     });
             }
         }
-        const updateProfileImage = () => {
-                console.log(TodoStore.getImage);
-                if(TodoStore.getImage===undefined){
-
-                }else{
-                    this.setState({
-                        isuploading: true,
-                    })
-                    TodoStore.setAdding(true);
-                    let id = reactLocalStorage.get('userid');
-                    const account = {
-                        image: TodoStore.getImage
-                    }
-                    
-                    var port = TodoStore.getPort+'accountrouter/update/profile/';
-                    axios.post(port + id, account)
-                        .then(res => {
-                            if (res.data === '202') {
-                                openNotification("Exist");
-                            } else if (res.data === '101') {
-                                reactLocalStorage.set('userimage', TodoStore.getImage);
-                                this.setState({
-                                    isuploading: false,
-                                })
-                                openNotification("UpdateImage");
-    
-                            } else {
-    
-                                openNotification("Server");
-                            }
-                        });
-                }
-               
-            
-        }
-        const onSubmit = async e => {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append('file', file);
-
-            try {
-                var port = TodoStore.getPort+'profile';
-                const res = await axios.post(port, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: progressEvent => {
-                        this.setState({
-                            uploadPercentage: parseInt(
-                                Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                            ),
-                        })
-
-                        setTimeout(() =>
-                            this.setState({
-                                uploadPercentage: 0,
-                            }),
-                            10000);
-                    }
-                });
-
-                const { fileName, filePath } = res.data;
-
-
-                this.setState({
-                    uploadedFile: { fileName, filePath },
-                    message: 'File Uploaded',
-                })
-
-
-
-            } catch (err) {
-                if (err.response.status === 500) {
-                    this.setState({
-                        message: 'There was a problem with the server',
-                    })
-                    // setMessage('There was a problem with the server');
-                } else {
-                    this.setState({
-                        message: err.response.data.msg,
-                    })
-                    // setMessage(err.response.data.msg);
-                }
-            }
-        };
+       
 
         const openNotification = (value) => {
             if (value === "Blank") {
@@ -371,89 +291,8 @@ class PageContent extends Component {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            <Col xs={12} md={6} style={{ paddingTop: '0.5em' }}>
-                                                {/* <Col xs={12} md={12}>
-                                                    {message ?
-                                                        openNotification("Success")
-                                                        : null}
-                                                </Col> */}
-                                                <form onSubmit={onSubmit}>
-                                                <Col xs={12} md={12}>
-                                                    <div className="col-md-12">
-                                                        <div className='custom-file mb-4'>
-                                                            <input
-                                                                type='file'
-                                                                className='custom-file-input'
-                                                                id='customFile'
-                                                                onChange={onChange}
-                                                            />
-                                                            <label className='custom-file-label' htmlFor='customFile'>
-                                                                {filename}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </Col>
-                                                <Col xs={12} md={12}>
-                                                    <Row>
-                                                        <Col xs={12} md={12}></Col>
-                                                        <Col xs={12} md={12}>
-                                                            <Progress percentage={uploadPercentage} />
-                                                        </Col>
-                                                        <Col xs={12} md={12}></Col>
-                                                    </Row>
-
-                                                </Col>
-                                                <Col xs={12} md={12}>
-
-                                                    {!TodoStore.getProfileImage &&
-                                                        <input
-                                                            type='submit'
-                                                            value='Upload'
-                                                            className='btn btn-primary btn-block mt-4'
-                                                            disabled
-                                                        />
-                                                    }
-                                                    {TodoStore.getProfileImage &&
-                                                        <input
-                                                            type='submit'
-                                                            value='Upload'
-                                                            className='btn btn-primary btn-block mt-4'
-                                                        />
-                                                    }
-
-                                                </Col>
-                                                </form>
-                                                {uploadedFile ? (
-                                                <Col xs={12} md={12} style={{ paddingTop: '2em', textAlign: 'center' }} >
-                                                    {
-                                                        setName(uploadedFile.fileName)
-                                                    }
-                                                    {!TodoStore.getAccountImage &&
-                                                      <img src={profile} style={{ width: '15em', height: '15em', borderRadius: '50%' }}/>
-                                                     
-                                                    }
-                                                    {TodoStore.getAccountImage &&
-                                                        <img style={{ width: '15em', height: '15em', borderRadius: '50%' }} src={uploadedFile.filePath} alt='' />
-                                                    }
-                                                   
-                                                </Col>
-                                                ) : null}
-                                                <Col xs={12} md={12} style={{ paddingTop: '2em', textAlign: 'right' }} >
-                                                    {!isuploading &&
-                                                            <Button
-                                                                onClick={updateProfileImage}
-                                                                style={{ color: '#ffffff', backgroundColor: '#1890ff', fontSize: '1em' }}>
-                                                                Save Profile Picture
-                                                          </Button>
-                                                    }
-                                                    {isuploading &&
-                                                            <Button
-                                                                style={{ color: '#ffffff', backgroundColor: '#1890ff', fontSize: '1em' }}>
-                                                                Please wait. Saving...
-                                                          </Button>
-                                                    }   
-                                                </Col>
-                                            </Col>
+                                            {/* Here */}
+                                            <ProfileImage/>
 
                                         </Row>
                                     </Col>

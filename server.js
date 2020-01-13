@@ -48,30 +48,30 @@ app.use('/paymentschemerouter',paymentschemeRouter);
 app.use('/messagerouter',messageRouter);
 
 // 3
-app.post('/profile', (req, res) => {
-    if (req.files === null) {
-        return res.status(400).json({ msg: 'No file uploaded' });
-    }
+// app.post('/profile', (req, res) => {
+//     if (req.files === null) {
+//         return res.status(400).json({ msg: 'No file uploaded' });
+//     }
 
-    const file = req.files.file;
+//     const file = req.files.file;
 
-    var tempDate = new Date();
-    var date = tempDate.getFullYear() + '' + (tempDate.getMonth() + 1) + '' + tempDate.getDate() + '' + tempDate.getHours() + '' + tempDate.getMinutes() + '' + tempDate.getSeconds();
-    // const currDate = "Current Date= " + date;
+//     var tempDate = new Date();
+//     var date = tempDate.getFullYear() + '' + (tempDate.getMonth() + 1) + '' + tempDate.getDate() + '' + tempDate.getHours() + '' + tempDate.getMinutes() + '' + tempDate.getSeconds();
+//     // const currDate = "Current Date= " + date;
 
-    file.name = date+''+file.name;
+//     file.name = date+''+file.name;
 
-    file.mv(`${__dirname}/todo-react/public/profile/${file.name}`, err => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send(err);
-        }
+//     file.mv(`${__dirname}/todo-react/public/profile/${file.name}`, err => {
+//         if (err) {
+//             console.error(err);
+//             return res.status(500).send(err);
+//         }
        
-        // console.log(file.name);
-        res.json({ fileName: file.name, filePath: `/profile/${file.name}` });
-        // res.json('Article Added!');
-    });
-});
+//         // console.log(file.name);
+//         res.json({ fileName: file.name, filePath: `/profile/${file.name}` });
+//         // res.json('Article Added!');
+//     });
+// });
 
 
 
