@@ -80,6 +80,7 @@ class PageContent extends Component {
         const setName = (filename) => {
 
             TodoStore.setAccountImage(filename);
+            console.log(filename);
         }
 
         const updateProfile = () => {
