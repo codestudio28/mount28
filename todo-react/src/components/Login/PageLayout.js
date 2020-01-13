@@ -44,6 +44,9 @@ class PageLayout extends Component {
                 });
            }
         }
+        const gotoHomePage = () =>{
+            window.open("/","_self");
+        }
         const openNotification = (value) => {
             if (value === "Blank") {
                 notification.open({
@@ -115,7 +118,7 @@ class PageLayout extends Component {
                                                     <h4 style={{ color: '#ffffff', fontSize: '1em' }}>Welcome to MMPDC</h4>
                                                 </Col>
                                                 <Col xs={12} md={12} style={{marginTop:'1em'}}>
-                                                    <p style={{ color: '#ffffff', fontSize: '1em',textAlign:'justify' }}>
+                                                    <p style={{ color: '#ffffff', fontSize: '0.75em',textAlign:'justify' }}>
                                                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
                                                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
                                                     when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
@@ -124,7 +127,7 @@ class PageLayout extends Component {
                                                     </p>
                                                 </Col>
                                                 <Col xs={12} md={12} style={{marginTop:'1em'}}>
-                                                    <Button  style={{color:'#092b00',backgroundColor:'#ffffff'}}>Go to Home page</Button>
+                                                    <Button onClick={gotoHomePage} style={{color:'#092b00',backgroundColor:'#ffffff'}}>Go to Home page</Button>
                                                 </Col>
                                             </Row>
 

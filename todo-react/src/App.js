@@ -17,14 +17,16 @@ import PaymentScheme from './components/Admin/Settings/PaymentScheme/PageLayout'
 import AccountInfo from './components/Admin/Account/AccountInformation/PageLayout';
 import ChangePassword from './components/Admin/Account/ChangePassword/PageLayout';
 import Buy from './components/Admin/Transaction/Buy/PageLayout';
+import Home from './components/Public/Home/Home';
+import Inquiry from './components/Public/Inquiry/Home';
 function App() {
 
   return (
     <Router>
      
       <Switch>
-          {/* <Route path="/login" exact component={PageLayout}></Route> */}
-          <Route path="/" exact component={PageLayout}></Route>
+          <Route path="/" exact component={Home}></Route>
+          <Route path="/login" exact component={PageLayout}></Route>
           <Route path="/dashboard" exact component={Dashboard}></Route>
           <Route path="/client" exact component={Client}></Route>
           <Route path="/client/removed" exact component={RemovedClient}></Route>
@@ -37,6 +39,7 @@ function App() {
           <Route path="/account" exact component={AccountInfo}></Route>
           <Route path="/account/password" exact component={ChangePassword}></Route>
           <Route path="/buy" exact component={Buy}></Route>
+          <Route path="/inquire" exact component={Inquiry}></Route>
         </Switch>
     </Router>
   );

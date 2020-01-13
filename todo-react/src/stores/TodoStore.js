@@ -46,6 +46,9 @@ class TodoStore {
 @observable schemename ='';
 @observable schemepercentage ='';
 @observable schemeyears =5;
+@observable birthdate ='';
+@observable salaryrange ='Select Salary Range';
+@observable message ='';
 
 @action setLoading = (value) => {
   this.loading=value;
@@ -145,6 +148,7 @@ class TodoStore {
 }
 @action setContactNumber = (e) => {
   this.contactnumber=e.target.value;
+  
 }
 @action setAddress = (e) => {
   this.address=e.target.value;
@@ -221,7 +225,10 @@ class TodoStore {
 @action setProfileImage = (value) => {
   this.profileimage=value;
 }
-
+@action setBirthdate = (date, dateString) => {
+  this.birthdate=dateString;
+  
+}
 
 @action setHandleCancel = () => {
   this.addmodal=false;
@@ -236,6 +243,15 @@ class TodoStore {
   this.city="";
   this.province="";
 }
+@action setSalaryRange = (value) => {
+  this.salaryrange=value;
+  console.log(this.salaryrange);
+}
+@action setMessage = (e) => {
+  this.message=e.target.value;
+}
+
+
 // Computed
 
 @computed get getLoading(){
@@ -358,6 +374,16 @@ class TodoStore {
 @computed get getPort(){
   return this.port;
 }
+@computed get getBirthdate(){
+  return this.birthdate;
+}
+@computed get getSalaryRange(){
+  return this.salaryrange;
+}
+@computed get getMessage(){
+  return this.message;
+}
+
 
 }
 const store = new TodoStore();

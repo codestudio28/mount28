@@ -38,12 +38,14 @@ const propertyRouter = require('./routes/property');
 const clientRouter = require('./routes/client');
 const proptypeRouter = require('./routes/proptype');
 const paymentschemeRouter = require('./routes/paymentscheme');
+const messageRouter = require('./routes/message');
 
 app.use('/accountrouter',userRouter);
 app.use('/propertyrouter',propertyRouter);
 app.use('/clientrouter',clientRouter);
 app.use('/proptyperouter',proptypeRouter);
 app.use('/paymentschemerouter',paymentschemeRouter);
+app.use('/messagerouter',messageRouter);
 
 // 3
 app.post('/profile', (req, res) => {
