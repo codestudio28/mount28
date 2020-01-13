@@ -192,103 +192,208 @@ class PageContent extends Component {
                 i++;
                 if ((index >= starts) && (index < ends)) {
                     if(sizes===0){
-                        return (
-                        
-                            <tr key={i}>
-                                <td>{i}</td>
-                                <td><Avatar src={TodoStore.getAddUserProfilePath+data.image}
-                                style={{ "width": "2.5em", "height": "2em" }} /></td>
-                                <td>{data.email}</td>
-                                <td>{data.firstname} {data.middlename} {data.lastname}</td>
-                                <td>
-                                {!TodoStore.getLoading &&
-                                    <ButtonGroup>
-                                        <Tooltip placement="topLeft" title="Click to retrieve this administrator">
-                                            <Popconfirm
-                                                placement="topRight"
-                                                title="Do you want to retrieve this administrator?"
-                                                onConfirm={removeAdministrator}
-                                                okText="Yes"
-                                                cancelText="No"
-                                            >
-                                                <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                            </Popconfirm>
-                                        </Tooltip>
-                                    </ButtonGroup>
-                                    }
-                                    {TodoStore.getLoading &&
-                                        <div style={{fontSize:'1em',
-                                        backgroundColor:'#a0d911',
-                                        height:'2em',
-                                        borderRadius:'0.5em',
-                                        width:'12em',
-                                        textAlign:'center',
-                                        padding:'0.25em',
-                                        color:'#ffffff'}}>
-                                        Loading... Please wait.
-                                    </div>
-                                    }
-                                </td>
-                            </tr>
-                        )
-                    }else {
-                        return (
+                        if(data.image!=="avatar.png"){
                            
-                            <Col key={data.key} xs={12} md={12} style={{
-                                backgroundColor: '#bae7ff',
-                                height: 'auto',
-                                marginTop: '0.5em',
-                                minHeight: '5em',
-                                padding: '1em 0.5em 1em 0.5em',
-                                borderRadius: '0.5em'
-                            }}>
-                                <Row >
-                                     <Col xs={12} md={12} >
-                                         <Row>
-                                            <Col xs={6} md={6}>
-                                                <Row>
-                                                    <Col xs={12} md={12} >
-                                                        <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Email:</span> {data.email}</h4>
-                                                    </Col>
-                                                    <Col xs={12} md={12} >
-                                                        <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Name:</span> {data.firstname} {data.middlename} {data.lastname}</h4>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                            <Col xs={6} md={6}>
-                                                <img src={TodoStore.getAddUserProfilePath+data.image} style={{width:'10em'}}/>
-                                            </Col>
-                                         </Row>
-                                        
-                                    </Col>
-                                    <Col xs={12} md={12} >
-                                        <div style={{ borderTop: '1px solid', width: '100%' }}>
-
-                                        </div>
-                                    </Col>
-                                    <Col xs={12} md={12} style={{textAlign:'right',paddingTop:'0.5em'}}>
+                            return (
+                               
+                                <tr key={i}>
+                                    <td>{i}</td>
+                                    <td><Avatar src={data.image}
+                                    style={{ "width": "2.5em", "height": "2em" }} /></td>
+                                    <td>{data.email}</td>
+                                    <td>{data.firstname} {data.middlename} {data.lastname}</td>
+                                    <td>
                                     {!TodoStore.getLoading &&
-                                           <ButtonGroup>
-                                           <Tooltip placement="topLeft" title="Click to retrieve this administrator">
-                                               <Popconfirm
-                                                   placement="topRight"
-                                                   title="Do you want to retrieve this administrator?"
-                                                   onConfirm={removeAdministrator}
-                                                   okText="Yes"
-                                                   cancelText="No"
-                                               >
-                                                   <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
-                                               </Popconfirm>
-                                           </Tooltip>
-                                       </ButtonGroup>
-                                     }
-                                     {TodoStore.getLoading &&
-                                        <Spin/>
-                                     }
-                                    </Col>
-                                </Row>
-                            </Col>
-                        )
+                                        <ButtonGroup>
+                                            <Tooltip placement="topLeft" title="Click to retrieve this administrator">
+                                                <Popconfirm
+                                                    placement="topRight"
+                                                    title="Do you want to retrieve this administrator?"
+                                                    onConfirm={removeAdministrator}
+                                                    okText="Yes"
+                                                    cancelText="No"
+                                                >
+                                                    <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Popconfirm>
+                                            </Tooltip>
+                                        </ButtonGroup>
+                                        }
+                                        {TodoStore.getLoading &&
+                                            <div style={{fontSize:'1em',
+                                            backgroundColor:'#a0d911',
+                                            height:'2em',
+                                            borderRadius:'0.5em',
+                                            width:'12em',
+                                            textAlign:'center',
+                                            padding:'0.25em',
+                                            color:'#ffffff'}}>
+                                            Loading... Please wait.
+                                        </div>
+                                        }
+                                    </td>
+                                </tr>
+                            )
+                        }else{
+                            return (
+                        
+                                <tr key={i}>
+                                    <td>{i}</td>
+                                    <td><Avatar src={TodoStore.getAddUserProfilePath+data.image}
+                                    style={{ "width": "2.5em", "height": "2em" }} /></td>
+                                    <td>{data.email}</td>
+                                    <td>{data.firstname} {data.middlename} {data.lastname}</td>
+                                    <td>
+                                    {!TodoStore.getLoading &&
+                                        <ButtonGroup>
+                                            <Tooltip placement="topLeft" title="Click to retrieve this administrator">
+                                                <Popconfirm
+                                                    placement="topRight"
+                                                    title="Do you want to retrieve this administrator?"
+                                                    onConfirm={removeAdministrator}
+                                                    okText="Yes"
+                                                    cancelText="No"
+                                                >
+                                                    <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                </Popconfirm>
+                                            </Tooltip>
+                                        </ButtonGroup>
+                                        }
+                                        {TodoStore.getLoading &&
+                                            <div style={{fontSize:'1em',
+                                            backgroundColor:'#a0d911',
+                                            height:'2em',
+                                            borderRadius:'0.5em',
+                                            width:'12em',
+                                            textAlign:'center',
+                                            padding:'0.25em',
+                                            color:'#ffffff'}}>
+                                            Loading... Please wait.
+                                        </div>
+                                        }
+                                    </td>
+                                </tr>
+                            )
+                        }
+                       
+                    }else {
+                        if(data.image!=="avatar.png"){
+                            return (
+                           
+                                <Col key={data.key} xs={12} md={12} style={{
+                                    backgroundColor: '#bae7ff',
+                                    height: 'auto',
+                                    marginTop: '0.5em',
+                                    minHeight: '5em',
+                                    padding: '1em 0.5em 1em 0.5em',
+                                    borderRadius: '0.5em'
+                                }}>
+                                    <Row >
+                                         <Col xs={12} md={12} >
+                                             <Row>
+                                                <Col xs={6} md={6}>
+                                                    <Row>
+                                                        <Col xs={12} md={12} >
+                                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Email:</span> {data.email}</h4>
+                                                        </Col>
+                                                        <Col xs={12} md={12} >
+                                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Name:</span> {data.firstname} {data.middlename} {data.lastname}</h4>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col xs={6} md={6}>
+                                                    <img src={data.image} style={{width:'10em'}}/>
+                                                </Col>
+                                             </Row>
+                                            
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <div style={{ borderTop: '1px solid', width: '100%' }}>
+    
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={12} style={{textAlign:'right',paddingTop:'0.5em'}}>
+                                        {!TodoStore.getLoading &&
+                                               <ButtonGroup>
+                                               <Tooltip placement="topLeft" title="Click to retrieve this administrator">
+                                                   <Popconfirm
+                                                       placement="topRight"
+                                                       title="Do you want to retrieve this administrator?"
+                                                       onConfirm={removeAdministrator}
+                                                       okText="Yes"
+                                                       cancelText="No"
+                                                   >
+                                                       <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                   </Popconfirm>
+                                               </Tooltip>
+                                           </ButtonGroup>
+                                         }
+                                         {TodoStore.getLoading &&
+                                            <Spin/>
+                                         }
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            )
+                        }else{
+                            return (
+                           
+                                <Col key={data.key} xs={12} md={12} style={{
+                                    backgroundColor: '#bae7ff',
+                                    height: 'auto',
+                                    marginTop: '0.5em',
+                                    minHeight: '5em',
+                                    padding: '1em 0.5em 1em 0.5em',
+                                    borderRadius: '0.5em'
+                                }}>
+                                    <Row >
+                                         <Col xs={12} md={12} >
+                                             <Row>
+                                                <Col xs={6} md={6}>
+                                                    <Row>
+                                                        <Col xs={12} md={12} >
+                                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Email:</span> {data.email}</h4>
+                                                        </Col>
+                                                        <Col xs={12} md={12} >
+                                                            <h4 style={{ fontSize: '1em' }}><span style={{color:'#8c8c8c'}}>Name:</span> {data.firstname} {data.middlename} {data.lastname}</h4>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col xs={6} md={6}>
+                                                    <img src={TodoStore.getAddUserProfilePath+data.image} style={{width:'10em'}}/>
+                                                </Col>
+                                             </Row>
+                                            
+                                        </Col>
+                                        <Col xs={12} md={12} >
+                                            <div style={{ borderTop: '1px solid', width: '100%' }}>
+    
+                                            </div>
+                                        </Col>
+                                        <Col xs={12} md={12} style={{textAlign:'right',paddingTop:'0.5em'}}>
+                                        {!TodoStore.getLoading &&
+                                               <ButtonGroup>
+                                               <Tooltip placement="topLeft" title="Click to retrieve this administrator">
+                                                   <Popconfirm
+                                                       placement="topRight"
+                                                       title="Do you want to retrieve this administrator?"
+                                                       onConfirm={removeAdministrator}
+                                                       okText="Yes"
+                                                       cancelText="No"
+                                                   >
+                                                       <Button style={{ backgroundColor: '#722ed1' }} onClick={(event) => TodoStore.setRemoveId(data.key)}><Icon type="interaction" style={{ color: '#fff', fontSize: '1.25em' }}></Icon></Button>
+                                                   </Popconfirm>
+                                               </Tooltip>
+                                           </ButtonGroup>
+                                         }
+                                         {TodoStore.getLoading &&
+                                            <Spin/>
+                                         }
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            )
+                        }
+                      
                     }
                        
                     
